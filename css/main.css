@@ -1,3 +1,39 @@
+@font-face {
+  font-style: normal;
+  font-weight: 300;
+  font-family: "Open Sans Condensed";
+  font-display: swap;
+
+  src:
+    local("Open Sans Condensed Light"),
+    url("../fonts/opensanscondensed-light.woff2") format("woff2"),
+    url("../fonts/opensanscondensed-light.woff") format("woff");
+}
+
+@font-face {
+  font-style: normal;
+  font-weight: 700;
+  font-family: "Open Sans Condensed";
+  font-display: swap;
+
+  src:
+    local("Open Sans Condensed Bold"),
+    url("../fonts/opensanscondensed-bold.woff2") format("woff2"),
+    url("../fonts/opensanscondensed-bold.woff") format("woff");
+}
+
+@font-face {
+  font-style: normal;
+  font-weight: 400;
+  font-family: "Roboto";
+  font-display: swap;
+
+  src:
+    local("Roboto"),
+    url("../fonts/roboto-regular.woff2") format("woff2"),
+    url("../fonts/roboto-regular.woff") format("woff");
+}
+
 html,
 body {
   margin: 0;
@@ -20,7 +56,7 @@ body {
   min-width: 980px;
   min-height: 900px;
 
-  font: 14px "Open Sans", Arial, sans-serif;
+  font: 14px "Open Sans Condensed", "Arial", sans-serif;
   color: #ffe753;
 }
 
@@ -111,40 +147,29 @@ body {
   position: relative;
 }
 
-.upload-effect-preview {
-  background-image: url('../img/upload-default-image.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 .upload-effect-label-chrome .upload-effect-preview,
 .effect-chrome {
-  -webkit-filter: grayscale(1);
-          filter: grayscale(1);
+  filter: grayscale(1);
 }
 
 .upload-effect-label-sepia .upload-effect-preview,
 .effect-sepia {
-  -webkit-filter: sepia(1);
-          filter: sepia(1);
+  filter: sepia(1);
 }
 
 .upload-effect-label-marvin .upload-effect-preview,
 .effect-marvin {
-  -webkit-filter: invert(100%);
-          filter: invert(100%);
+  filter: invert(100%);
 }
 
 .upload-effect-label-phobos .upload-effect-preview,
 .effect-phobos {
-  -webkit-filter: blur(5px);
-          filter: blur(5px);
+  filter: blur(5px);
 }
 
 .upload-effect-label-heat .upload-effect-preview,
 .effect-heat {
-  -webkit-filter: brightness(3);
-          filter: brightness(3);
+  filter: brightness(3);
 }
 
 .upload-input {
@@ -168,15 +193,12 @@ body {
 }
 
 .upload-image .upload-submit {
+  display: none;
   background-image: url("../img/upload-button.png");
 }
 
 .upload-file {
   display: block;
-}
-
-.upload-image .upload-submit {
-  display: none;
 }
 
 .upload-input-hasvalue + .upload-file {
@@ -238,8 +260,8 @@ body {
   margin: 0;
   padding: 0;
 
-  font: 700 20px/33px "Open Sans";
-  color: #fff;
+  font: 700 20px/33px "Open Sans Condensed", "Arial", sans-serif;
+  color: #ffffff;
   text-align: center;
   vertical-align: top;
 
@@ -291,7 +313,7 @@ body {
   vertical-align: middle;
 }
 
-.upload-effect-controls input[type=radio] {
+.upload-effect-controls input[type="radio"] {
   position: absolute;
 
   visibility: hidden;
@@ -301,7 +323,7 @@ body {
   display: inline-block;
   margin: 0 5px;
 
-  font: 14px "Open Sans Condensed";
+  font: 14px "Open Sans Condensed", "Arial", sans-serif;
   font-weight: 700;
   color: #ffffff;
   text-transform: uppercase;
@@ -310,11 +332,11 @@ body {
 }
 
 .upload-effect-label:hover,
-input[type=radio]:checked + .upload-effect-label {
+input[type="radio"]:checked + .upload-effect-label {
   color: #ffe753;
 }
 
-input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
+input[type="radio"]:checked + .upload-effect-label .upload-effect-preview {
   border-color: #ffe753;
 }
 
@@ -323,14 +345,14 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   display: block;
   width: 70px;
   height: 70px;
-
   overflow: hidden;
-  background-size: 100% auto;
+  margin-bottom: 5px;
+  background-image: url("../img/upload-default-image.jpg");
+  background-repeat: no-repeat;
   background-position: center;
+  background-size: 100% auto;
   border: solid 4px transparent;
   border-radius: 5px;
-
-  margin-bottom: 5px;
 }
 
 /* Слайдер. Регулировка глубины фильтра */
@@ -390,7 +412,7 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
 .upload-form-hashtags {
   width: 470px;
 
-  font: 18px "Open Sans";
+  font: 18px "Open Sans Condensed", "Arial", sans-serif;
   color: #9a9a9a;
 
   display: block;
@@ -401,7 +423,7 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
 }
 
 .upload-form-hashtags:focus {
-  color: #000;
+  color: #000000;
 }
 
 /* Описание */
@@ -409,7 +431,7 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   width: 470px;
   height: 4em;
 
-  font: 14px "Open Sans";
+  font: 14px "Open Sans Condensed", "Arial", sans-serif;
   color: #9a9a9a;
 
   display: block;
@@ -420,7 +442,7 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
 }
 
 .upload-form-description:focus {
-  color: #000;
+  color: #000000;
 }
 
 /* Кнопка отправки */
@@ -428,7 +450,7 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   padding: 0 20px;
   margin-bottom: 30px;
 
-  font: 14px "Open Sans";
+  font: 14px "Open Sans Condensed", "Arial", sans-serif;
   font-weight: 900;
   color: #ffe753;
   text-transform: uppercase;
@@ -506,8 +528,8 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   text-align: left;
 }
 
-.pictures-loading:after,
-.pictures-failure:after {
+.pictures-loading::after,
+.pictures-failure::after {
   position: absolute;
   top: 260px;
   left: 50%;
@@ -526,11 +548,11 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   border-radius: 10px;
 }
 
-.pictures-loading:after {
+.pictures-loading::after {
   content: "Загрузка...";
 }
 
-.pictures-failure:after {
+.pictures-failure::after {
   content: "Ошибка загрузки";
 }
 
@@ -602,7 +624,7 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   vertical-align: middle;
 }
 
-.picture-stat:before {
+.picture-stat::before {
   content: "";
   position: relative;
   top: -1px;
@@ -615,14 +637,14 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   background: url("../img/image-icons-sprite.png") no-repeat 0 0;
 }
 
-.picture-comments:before {
+.picture-comments::before {
   width: 20px;
   height: 16px;
 
   background-position: 0 0;
 }
 
-.picture-likes:before {
+.picture-likes::before {
   width: 19px;
   height: 15px;
 
@@ -649,9 +671,11 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   .picture:nth-child(1) {
     margin-right: 600px;
   }
+
   .picture:nth-child(3) {
     margin-right: 600px;
   }
+
   .picture:nth-child(5) {
     margin-right: 600px;
   }
@@ -672,13 +696,15 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   }
 }
 
-@media only screen and (max-width: 999px){
+@media only screen and (max-width: 999px) {
   .picture:nth-child(1) {
     margin-right: 600px;
   }
+
   .picture:nth-child(2) {
     margin-right: 600px;
   }
+
   .picture:nth-child(3) {
     margin-right: 600px;
   }
@@ -759,7 +785,7 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   cursor: pointer;
 }
 
-.likes-count:before {
+.likes-count::before {
   content: "";
 
   display: inline-block;
@@ -773,7 +799,7 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   cursor: pointer;
 }
 
-.likes-count-liked:before {
+.likes-count-liked::before {
   background-position-x: -18px;
 }
 
@@ -788,7 +814,7 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
   padding: 20px 0 40px;
 
   font-size: 12px;
-  font-family: Roboto, Arial, sans-serif;
+  font-family: "Roboto", "Arial", sans-serif;
   color: #ffffff;
 
   border-top: solid 1px #cccccc;
@@ -848,8 +874,6 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
 .footer-social-item:hover {
   opacity: 1;
 }
-
-
 
 .footer-social-item-instagram {
   background-position: -28px 0;

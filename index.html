@@ -2,15 +2,14 @@
 <html lang="ru">
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans&subset=latin,cyrillic">
+    <title>Кекстаграм</title>
+    <link rel="preload" href="fonts/opensanscondensed-bold.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="fonts/opensanscondensed-light.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="fonts/roboto-regular.woff2" as="font" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <title>Кекстаграм</title>
   </head>
   <body>
-
-    <!-- FIXME: Добавить шрифты локально -->
 
   <form class="filters hidden" action="index.html" method="get" autocomplete="off">
     <input type="radio" id="filter-recommend" class="filters-radio" name="filter" value="recommend" checked>
@@ -38,12 +37,10 @@
       <div class="upload-effect">
         <div class="upload-effect__container">
           <fieldset class="upload-resize-controls">
-            <button type="button"
-                    class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-dec">–
+            <button type="button" class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-dec">–
             </button><!--
             --><input type="text" class="upload-resize-control upload-resize-controls-value" value="55%" readonly title="Image Scale" name="scale"/><!--
-            --><button type="button"
-                    class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-inc">+
+            --><button type="button" class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-inc">+
             </button>
           </fieldset>
 
@@ -118,11 +115,8 @@
   <footer class="footer container">
     <div class="center-wrapper">
       <section class="footer-logo">
-        Сделано в <a tabindex="1" href="http://htmlacademy.ru" class="footer-logo-link"><img src="img/ha-logo.png"
-                                                                                            class="footer-logo-image"
-                                                                                            width="130"
-                                                                                            alt="HTML Academy"/>HTML
-        Academy</a> &copy; 2017
+        Сделано в <a tabindex="1" href="http://htmlacademy.ru" class="footer-logo-link">
+          <img src="img/ha-logo.png" class="footer-logo-image" width="130" alt="HTML Academy"/>HTML Academy</a> &copy; 2017
       </section>
       <nav class="footer-social">
         <a tabindex="1" href="https://twitter.com/htmlacademy_ru" alt="twitter"
@@ -137,7 +131,6 @@
     </div>
   </footer>
 
-
   <div class="gallery-overlay hidden">
     <span class="gallery-overlay-close">&times;</span>
     <div class="gallery-overlay-preview">
@@ -149,7 +142,7 @@
     </div>
   </div>
 
-  <template id="picture-template" style="display: none">
+  <template id="picture-template" style="display: none;">
     <a href="" class="picture">
       <img src="" width="182" height="182">
       <span class="picture-stats">
