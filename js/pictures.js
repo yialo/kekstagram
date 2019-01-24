@@ -1,6 +1,11 @@
 'use strict';
 
-var AMOUNT_OF_URLS = 25;
+/*
+Генерация данных для описания фотографий
+----------------------------------------
+*/
+
+var AMOUNT_OF_PICTURES = 25;
 
 var COMMENT_SENTENCES = [
   'Всё отлично!',
@@ -60,7 +65,7 @@ var generateAmountOfLikes = function () {
 Генератор контента блока comment
 */
 
-var generateComment = function () {
+var generateComments = function () {
   var generatedComment = [];
 
   var firstSentenceIndex = selectRandomIndexOfArray(COMMENT_SENTENCES);
@@ -109,7 +114,7 @@ var checkValueExistenceInArray = function (testingValue, testingArray) {
   return testAnswer;
 };
 
-/* Выбор случайного числа из диапазонане "не более N" */
+/* Выбор случайного целого числа из диапазона от 1 до maxNumber */
 
 var selectRandomIntegerFromRange = function (maxNumber) {
   var randomIntegerFromRange = Math.floor(Math.random() * maxNumber) + 1;
@@ -120,17 +125,17 @@ var selectRandomIntegerFromRange = function (maxNumber) {
 Генератор адресов изображений
 */
 
-var generateSetOfUrls = function () {
+var generateSetOfUrls = function (totalAmountOfUrls) {
   var setOfNumbers = [];
   var setOfUrls = [];
 
   for (
-    var amountOfUrlsGenerated = 0;
-    amountOfUrlsGenerated < AMOUNT_OF_URLS;
-    amountOfUrlsGenerated += 1
+    var urlGeneratorCounter = 0;
+    urlGeneratorCounter < totalAmountOfUrls;
+    urlGeneratorCounter += 1
   ) {
     do {
-      var numberForUrl = selectRandomIntegerFromRange(AMOUNT_OF_URLS);
+      var numberForUrl = selectRandomIntegerFromRange(totalAmountOfUrls);
     } while (checkValueExistenceInArray(numberForUrl, setOfNumbers));
 
     setOfNumbers.push(numberForUrl);
@@ -140,3 +145,33 @@ var generateSetOfUrls = function () {
 
   return setOfUrls;
 };
+
+var urlsForPictures = generateSetOfUrls(AMOUNT_OF_PICTURES);
+
+/*
+Герератор объекта с данными для одной фотографии
+*/
+
+var generatePictureData = function (pictureNumber) {
+  var pictureData = {};
+  pictureData.url = urlsForPictures[pictureNumber];
+  pictureData.likes = generateAmountOfLikes();
+  pictureData.comments = generateComments();
+  pictureData.description = generateDescription();
+
+  return pictureData;
+};
+
+/*
+Создание массива с данными для всех фотографий
+*/
+
+var picturesData = [];
+
+for (
+  var picturesCounter = 1;
+  picturesCounter <= AMOUNT_OF_PICTURES;
+  picturesCounter += 1
+) {
+  picturesData.push(generatePictureData(picturesCounter));
+}
