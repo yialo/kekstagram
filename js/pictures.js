@@ -181,16 +181,17 @@ for (
 ========================================================
 */
 
-var pictureBlockTemplate = document.querySelector('#picture-template')
-  .content.querySelector('.picture');
+var pictureBlockTemplate = document.querySelector('#picture')
+  .content.querySelector('.picture__link');
 
 var generatePictureBlock = function (pictureObject) {
   var generatedPictureBlock = pictureBlockTemplate.cloneNode(true);
-  var pictureImageElement = generatedPictureBlock.querySelector('img');
+  var pictureImageElement = generatedPictureBlock
+    .querySelector('.picture__img');
   var pictureLikesAmountElement = generatedPictureBlock
-    .querySelector('.picture-likes');
+    .querySelector('.picture__stat--likes');
   var pictureCommentsAmountElement = generatedPictureBlock
-    .querySelector('.picture-comments');
+    .querySelector('.picture__stat--comments');
 
   pictureImageElement.src = pictureObject.url;
   pictureLikesAmountElement.textContent = pictureObject.likes;
