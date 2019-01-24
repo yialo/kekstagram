@@ -169,9 +169,51 @@ var generatePictureData = function (pictureNumber) {
 var picturesData = [];
 
 for (
-  var picturesCounter = 1;
-  picturesCounter <= AMOUNT_OF_PICTURES;
+  var picturesCounter = 0;
+  picturesCounter < AMOUNT_OF_PICTURES;
   picturesCounter += 1
 ) {
   picturesData.push(generatePictureData(picturesCounter));
 }
+
+/*
+Создание DOM-элемента с фотографией на основе JS-объекта
+========================================================
+*/
+
+var pictureBlockTemplate = document.querySelector('#picture-template')
+  .content.querySelector('.picture');
+
+var generatePictureBlock = function (pictureObject) {
+  var generatedPictureBlock = pictureBlockTemplate.cloneNode(true);
+  var pictureImageElement = generatedPictureBlock.querySelector('img');
+  var pictureLikesAmountElement = generatedPictureBlock
+    .querySelector('.picture-likes');
+  var pictureCommentsAmountElement = generatedPictureBlock
+    .querySelector('.picture-comments');
+
+  pictureImageElement.src = pictureObject.url;
+  pictureLikesAmountElement.textContent = pictureObject.likes;
+  pictureCommentsAmountElement.textContent = pictureObject.comments.length;
+
+  return generatedPictureBlock;
+};
+
+/*
+Отрисовка созданных DOM-элементов с фотографиями
+================================================
+*/
+
+var temporaryContainerForPictureBlocks = document.createDocumentFragment();
+
+for (
+  var pictureBlockCounter = 0;
+  pictureBlockCounter < picturesData.length;
+  pictureBlockCounter += 1
+) {
+  var pictureBlock = generatePictureBlock(picturesData[pictureBlockCounter]);
+  temporaryContainerForPictureBlocks.appendChild(pictureBlock);
+}
+
+var picturesContainer = document.querySelector('.pictures');
+picturesContainer.appendChild(temporaryContainerForPictureBlocks);
