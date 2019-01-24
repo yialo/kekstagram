@@ -218,3 +218,18 @@ for (
 
 var picturesContainer = document.querySelector('.pictures');
 picturesContainer.appendChild(temporaryContainerForPictureBlocks);
+
+/*
+Заполнение блока big-picture
+*/
+
+var bigPictureBlock = document.querySelector('.big-picture');
+var bigPictureBlockImage = bigPictureBlock
+  .querySelector('.big-picture__img img');
+var bigPictureBlockLikesCount = bigPictureBlock.querySelector('.likes-count');
+var bigPictureCommentsCount = bigPictureBlock.querySelector('.comments-count');
+
+bigPictureBlockImage.src = picturesData[0].url;
+bigPictureBlockLikesCount.textContent = picturesData[0].likes;
+bigPictureCommentsCount.textContent = picturesData[0].comments.length;
+bigPictureBlock.classList.remove('hidden');
