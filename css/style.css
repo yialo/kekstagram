@@ -892,7 +892,7 @@ main {
   top: 60px;
   left: 50%;
 
-  min-width: 600px;
+  width: 600px;
   min-height: 600px;
 
   padding-bottom: 60px;
@@ -957,6 +957,10 @@ main {
   margin-left: auto;
 }
 
+.social__text {
+  margin: 0;
+}
+
 .likes-count {
   position: relative;
   padding-left: 30px;
@@ -1008,7 +1012,9 @@ main {
 }
 
 .social__comment {
-  padding-left: 65px;
+  display: flex;
+  padding-left: 45px;
+  padding-right: 45px;
   padding-bottom: 20px;
 }
 
