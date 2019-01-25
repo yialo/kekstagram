@@ -1,6 +1,11 @@
 'use strict';
 
-var AMOUNT_OF_URLS = 25;
+/*
+Генерация данных для описания фотографий
+----------------------------------------
+*/
+
+var AMOUNT_OF_PICTURES = 25;
 
 var COMMENT_SENTENCES = [
   'Всё отлично!',
@@ -60,7 +65,7 @@ var generateAmountOfLikes = function () {
 Генератор контента блока comment
 */
 
-var generateComment = function () {
+var generateComments = function () {
   var generatedComment = [];
 
   var firstSentenceIndex = selectRandomIndexOfArray(COMMENT_SENTENCES);
@@ -109,7 +114,7 @@ var checkValueExistenceInArray = function (testingValue, testingArray) {
   return testAnswer;
 };
 
-/* Выбор случайного числа из диапазонане "не более N" */
+/* Выбор случайного целого числа из диапазона от 1 до maxNumber */
 
 var selectRandomIntegerFromRange = function (maxNumber) {
   var randomIntegerFromRange = Math.floor(Math.random() * maxNumber) + 1;
@@ -120,17 +125,17 @@ var selectRandomIntegerFromRange = function (maxNumber) {
 Генератор адресов изображений
 */
 
-var generateSetOfUrls = function () {
+var generateSetOfUrls = function (totalAmountOfUrls) {
   var setOfNumbers = [];
   var setOfUrls = [];
 
   for (
-    var amountOfUrlsGenerated = 0;
-    amountOfUrlsGenerated < AMOUNT_OF_URLS;
-    amountOfUrlsGenerated += 1
+    var urlGeneratorCounter = 0;
+    urlGeneratorCounter < totalAmountOfUrls;
+    urlGeneratorCounter += 1
   ) {
     do {
-      var numberForUrl = selectRandomIntegerFromRange(AMOUNT_OF_URLS);
+      var numberForUrl = selectRandomIntegerFromRange(totalAmountOfUrls);
     } while (checkValueExistenceInArray(numberForUrl, setOfNumbers));
 
     setOfNumbers.push(numberForUrl);
@@ -140,3 +145,147 @@ var generateSetOfUrls = function () {
 
   return setOfUrls;
 };
+
+var urlsForPictures = generateSetOfUrls(AMOUNT_OF_PICTURES);
+
+/*
+Герератор объекта с данными для одной фотографии
+*/
+
+var generatePictureData = function (pictureNumber) {
+  var pictureData = {};
+  pictureData.url = urlsForPictures[pictureNumber];
+  pictureData.likes = generateAmountOfLikes();
+  pictureData.comments = generateComments();
+  pictureData.description = generateDescription();
+
+  return pictureData;
+};
+
+/*
+Создание массива с данными для всех фотографий
+*/
+
+var picturesData = [];
+
+for (
+  var picturesCounter = 0;
+  picturesCounter < AMOUNT_OF_PICTURES;
+  picturesCounter += 1
+) {
+  picturesData.push(generatePictureData(picturesCounter));
+}
+
+/*
+Создание DOM-элемента с фотографией на основе JS-объекта
+========================================================
+*/
+
+var pictureBlockTemplate = document.querySelector('#picture')
+  .content.querySelector('.picture__link');
+
+var generatePictureBlock = function (pictureObject) {
+  var generatedPictureBlock = pictureBlockTemplate.cloneNode(true);
+  var pictureImageElement = generatedPictureBlock
+    .querySelector('.picture__img');
+  var pictureLikesAmountElement = generatedPictureBlock
+    .querySelector('.picture__stat--likes');
+  var pictureCommentsAmountElement = generatedPictureBlock
+    .querySelector('.picture__stat--comments');
+
+  pictureImageElement.src = pictureObject.url;
+  pictureLikesAmountElement.textContent = pictureObject.likes;
+  pictureCommentsAmountElement.textContent = pictureObject.comments.length;
+
+  return generatedPictureBlock;
+};
+
+/*
+Отрисовка созданных DOM-элементов с фотографиями
+================================================
+*/
+
+var temporaryContainerForPictureBlocks = document.createDocumentFragment();
+
+for (
+  var pictureBlockCounter = 0;
+  pictureBlockCounter < picturesData.length;
+  pictureBlockCounter += 1
+) {
+  var pictureBlock = generatePictureBlock(picturesData[pictureBlockCounter]);
+  temporaryContainerForPictureBlocks.appendChild(pictureBlock);
+}
+
+var picturesContainer = document.querySelector('.pictures');
+picturesContainer.appendChild(temporaryContainerForPictureBlocks);
+
+/*
+Заполнение блока big-picture
+*/
+
+var bigPictureBlock = document.querySelector('.big-picture');
+var bigPictureImage = bigPictureBlock
+  .querySelector('.big-picture__img img');
+var bigPictureSocialCaption = bigPictureBlock
+  .querySelector('.social__caption');
+var bigPictureLikesCount = bigPictureBlock
+  .querySelector('.likes-count');
+var bigPictureSocialCommentsCount = bigPictureBlock
+  .querySelector('.social__comment-count');
+var bigPictureCommentsCount = bigPictureSocialCommentsCount
+  .querySelector('.comments-count');
+var bigPictureCommentLoadingButton = bigPictureBlock
+  .querySelector('.social__comment-loadmore');
+var bigPictureSocialCommentsList = bigPictureBlock
+  .querySelector('.social__comments');
+
+while (bigPictureSocialCommentsList.firstChild) {
+  bigPictureSocialCommentsList
+    .removeChild(bigPictureSocialCommentsList.firstChild);
+}
+
+var generateBigPictureComment = function (commentText) {
+  var bigPictureCommentBlock = document.createElement('li');
+  bigPictureCommentBlock.classList.add('social__comment');
+  var bigPictureCommentImage = document.createElement('img');
+  bigPictureCommentImage.classList.add('social__picture');
+  var avatarNumber = selectRandomIntegerFromRange(6);
+  bigPictureCommentImage.src = 'img/avatar-' + avatarNumber + '.svg';
+  bigPictureCommentImage.alt = 'Аватар комментатора фотографии';
+  bigPictureCommentImage.width = '35';
+  bigPictureCommentImage.height = '35';
+  bigPictureCommentBlock.appendChild(bigPictureCommentImage);
+  var bigPictureCommentText = document.createElement('p');
+  bigPictureCommentText.classList.add('social__text');
+  bigPictureCommentText.textContent = commentText;
+  bigPictureCommentBlock.appendChild(bigPictureCommentText);
+
+  return bigPictureCommentBlock;
+};
+
+var addDataToBigPicture = function (pictureDataObject) {
+  var bigPictureCommentsContainer = document.createDocumentFragment();
+
+  bigPictureImage.src = pictureDataObject.url;
+  bigPictureLikesCount.textContent = pictureDataObject.likes;
+  bigPictureCommentsCount.textContent = pictureDataObject.comments.length;
+  bigPictureSocialCaption.textContent = pictureDataObject.description;
+
+  for (
+    var commentCounter = 0;
+    commentCounter < pictureDataObject.comments.length;
+    commentCounter += 1
+  ) {
+    bigPictureCommentsContainer.appendChild(
+        generateBigPictureComment(pictureDataObject.comments[commentCounter])
+    );
+  }
+
+  bigPictureSocialCommentsList.appendChild(bigPictureCommentsContainer);
+};
+
+addDataToBigPicture(picturesData[0]);
+
+bigPictureSocialCommentsCount.classList.add('visually-hidden');
+bigPictureCommentLoadingButton.classList.add('visually-hidden');
+bigPictureBlock.classList.remove('hidden');
