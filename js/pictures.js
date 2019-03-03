@@ -284,8 +284,95 @@ var addDataToBigPicture = function (pictureDataObject) {
   bigPictureSocialCommentsList.appendChild(bigPictureCommentsContainer);
 };
 
-addDataToBigPicture(picturesData[0]);
+/*
+Функция для показа большого изображения
+*/
 
-bigPictureSocialCommentsCount.classList.add('visually-hidden');
-bigPictureCommentLoadingButton.classList.add('visually-hidden');
-bigPictureBlock.classList.remove('hidden');
+var showBigPicture = function () {
+  addDataToBigPicture(picturesData[0]);
+  bigPictureSocialCommentsCount.classList.add('visually-hidden');
+  bigPictureCommentLoadingButton.classList.add('visually-hidden');
+  bigPictureBlock.classList.remove('hidden');
+};
+
+/*
+Работа формы обработки изображения
+==================================
+*/
+
+/* Открытие/закрытие формы */
+
+var KEYDOWN_ESC = 27;
+
+var uploadForm = document.querySelector('#upload-select-image');
+var uploadFileInput = uploadForm.querySelector('#upload-file');
+var uploadCancel = uploadForm.querySelector('#upload-cancel');
+var uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
+
+var popupEscPressHandler = function (evt) {
+  if (evt.keyCode === KEYDOWN_ESC) {
+    uploadOverlay.classList.add('hidden');
+    uploadFileInput.value = '';
+  }
+};
+
+uploadOverlay.classList.remove('hidden');
+document.addEventListener('keydown', popupEscPressHandler);
+
+var popupOpenHandler = function () {
+  uploadOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', popupEscPressHandler);
+};
+
+var popupCloseHandler = function () {
+  uploadOverlay.classList.add('hidden');
+  uploadFileInput.value = '';
+  document.removeEventListener('keydown', popupEscPressHandler);
+};
+
+uploadFileInput.addEventListener('change', function () {
+  popupOpenHandler();
+});
+
+uploadCancel.addEventListener('click', function () {
+  popupCloseHandler();
+});
+
+/* Изменение размера изображения */
+
+var resizeControlInput = uploadForm.querySelector('.resize__control--value');
+var resizeControlMinus = uploadForm.querySelector('.resize__control--minus');
+var resizeControlPlus = uploadForm.querySelector('.resize__control--plus');
+
+var getResizeValue = function () {
+  var resizeValueString = resizeControlInput.value;
+  return +resizeValueString.slice(0, -1);
+};
+
+var setResizeValue = function (valueString) {
+  resizeControlInput.value = valueString + '%';
+};
+
+var resizeControlMinusClickHandler = function () {
+  var currentResizeValue = getResizeValue();
+  if (currentResizeValue > 25 && currentResizeValue <= 100) {
+    currentResizeValue -= 25;
+  }
+  setResizeValue(currentResizeValue);
+};
+
+var resizeControlPlusClickHandler = function () {
+  var currentResizeValue = getResizeValue();
+  if (currentResizeValue >= 25 && currentResizeValue < 100) {
+    currentResizeValue += 25;
+  }
+  setResizeValue(currentResizeValue);
+};
+
+resizeControlMinus.addEventListener('click', function () {
+  resizeControlMinusClickHandler();
+});
+
+resizeControlPlus.addEventListener('click', function () {
+  resizeControlPlusClickHandler();
+});

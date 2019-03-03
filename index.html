@@ -32,7 +32,7 @@
         <div class="img-upload__wrapper">
           <h2 class="img-upload__title visually-hidden">Загрузка фотографии</h2>
 
-          <form class="img-upload__form" id="upload-select-image" method="post" enctype="multipart/form-data" autocomplete="off">
+          <form class="img-upload__form" id="upload-select-image" method="POST" enctype="multipart/form-data" autocomplete="off">
 
             <fieldset class="img-upload__start">
               <input type="file" id="upload-file" class="img-upload__input visually-hidden" name="filename" required>
@@ -55,7 +55,7 @@
 
                   <fieldset class="img-upload__resize resize">
                     <button type="button" class="resize__control resize__control--minus">Уменьшить</button>
-                    <input type="text" class="resize__control resize__control--value" value="55%" title="Image Scale" name="scale" readonly>
+                    <input type="text" class="resize__control resize__control--value" value="100%" title="Image Scale" name="scale" readonly>
                     <button type="button" class="resize__control resize__control--plus">Увеличить</button>
                   </fieldset>
 
