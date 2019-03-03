@@ -343,6 +343,7 @@ uploadCancel.addEventListener('click', function () {
 var resizeControlInput = uploadForm.querySelector('.resize__control--value');
 var resizeControlMinus = uploadForm.querySelector('.resize__control--minus');
 var resizeControlPlus = uploadForm.querySelector('.resize__control--plus');
+var imageUploadPreview = uploadForm.querySelector('.img-upload__preview');
 
 var getResizeValue = function () {
   var resizeValueString = resizeControlInput.value;
@@ -353,12 +354,22 @@ var setResizeValue = function (valueString) {
   resizeControlInput.value = valueString + '%';
 };
 
+var setScaleValue = function (value) {
+  var scaleValue = (
+    value === 100
+      ? 'none'
+      : 'scale(0.' + value + ')'
+  );
+  return scaleValue;
+};
+
 var resizeControlMinusClickHandler = function () {
   var currentResizeValue = getResizeValue();
   if (currentResizeValue > 25 && currentResizeValue <= 100) {
     currentResizeValue -= 25;
   }
   setResizeValue(currentResizeValue);
+  imageUploadPreview.style.transform = setScaleValue(currentResizeValue);
 };
 
 var resizeControlPlusClickHandler = function () {
@@ -367,6 +378,7 @@ var resizeControlPlusClickHandler = function () {
     currentResizeValue += 25;
   }
   setResizeValue(currentResizeValue);
+  imageUploadPreview.style.transform = setScaleValue(currentResizeValue);
 };
 
 resizeControlMinus.addEventListener('click', function () {
