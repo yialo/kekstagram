@@ -388,3 +388,10 @@ resizeControlMinus.addEventListener('click', function () {
 resizeControlPlus.addEventListener('click', function () {
   resizeControlPlusClickHandler();
 });
+
+/* Наложение эффекта на изображение */
+
+var scale = document.querySelector('.img-upload__scale');
+var scalePin = scale.querySelector('.scale__pin');
+
+// scalePin.addEventListener('mouseup')
