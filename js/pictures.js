@@ -343,7 +343,8 @@ uploadCancel.addEventListener('click', function () {
 var resizeControlInput = uploadForm.querySelector('.resize__control--value');
 var resizeControlMinus = uploadForm.querySelector('.resize__control--minus');
 var resizeControlPlus = uploadForm.querySelector('.resize__control--plus');
-var imageUploadPreview = uploadForm.querySelector('.img-upload__preview');
+var imageUploadPreviewWrapper = uploadForm
+  .querySelector('.img-upload__preview');
 
 var getResizeValue = function () {
   var resizeValueString = resizeControlInput.value;
@@ -393,5 +394,55 @@ resizeControlPlus.addEventListener('click', function () {
 
 var scale = document.querySelector('.img-upload__scale');
 var scalePin = scale.querySelector('.scale__pin');
+// Возможно, следующая коллекция не потребуется
+var effectInputs = document.querySelectorAll('.effects__radio');
+var effectNone = document.querySelector('#effect-none');
+var effectChrome = document.querySelector('#effect-chrome');
+var effectSepia = document.querySelector('#effect-sepia');
+var effectMarvin = document.querySelector('#effect-marvin');
+var effectPhobos = document.querySelector('#effect-phobos');
+var effectHeat = document.querySelector('#effect-heat');
+var imagePreview = imageUploadPreviewWrapper.querySelector('img');
+
+var removeElementClasses = function (element) {
+  var classes = element.classList;
+  var classAmount = classes.length;
+
+  if (classAmount) {
+    for (var i = 0; i < classAmount; i += 1) {
+      classes.remove(classes[i]);
+    }
+  }
+};
+
+effectNone.addEventListener('click', function () {
+  removeElementClasses(imagePreview);
+});
+
+effectChrome.addEventListener('click', function () {
+  removeElementClasses(imagePreview);
+  imagePreview.classList.add('effects__preview--chrome');
+});
+
+effectSepia.addEventListener('click', function () {
+  removeElementClasses(imagePreview);
+  imagePreview.classList.add('effects__preview--sepia');
+});
+
+effectMarvin.addEventListener('click', function () {
+  imagePreview.style.filter = 'invert(100%)';
+});
+
+effectPhobos.addEventListener('click', function () {
+  imagePreview.style.filter = 'blur(3px)';
+});
+
+effectHeat.addEventListener('click', function () {
+  imagePreview.style.filter = 'brightness(3)';
+});
 
 // scalePin.addEventListener('mouseup')
+
+// scalepin.addEventListener('mouseup', function () {
+
+// });
