@@ -356,11 +356,7 @@ var setResizeValue = function (valueString) {
 };
 
 var setScaleValue = function (value) {
-  var scaleValue = (
-    value === 100
-      ? 'none'
-      : 'scale(0.' + value + ')'
-  );
+  var scaleValue = (value === 100 ? 'none' : 'scale(0.' + value + ')');
   return scaleValue;
 };
 
@@ -370,7 +366,8 @@ var resizeControlMinusClickHandler = function () {
     currentResizeValue -= 25;
   }
   setResizeValue(currentResizeValue);
-  imageUploadPreview.style.transform = setScaleValue(currentResizeValue);
+  imageUploadPreviewWrapper
+    .style.transform = setScaleValue(currentResizeValue);
 };
 
 var resizeControlPlusClickHandler = function () {
@@ -379,7 +376,8 @@ var resizeControlPlusClickHandler = function () {
     currentResizeValue += 25;
   }
   setResizeValue(currentResizeValue);
-  imageUploadPreview.style.transform = setScaleValue(currentResizeValue);
+  imageUploadPreviewWrapper
+    .style.transform = setScaleValue(currentResizeValue);
 };
 
 resizeControlMinus.addEventListener('click', function () {

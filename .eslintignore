@@ -1,3 +1,4 @@
+*.html
 .git/
 .vscode/
 node_modules/
