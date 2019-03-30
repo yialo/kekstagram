@@ -311,6 +311,7 @@ var uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
 
 var popupEscPressHandler = function (evt) {
   if (evt.keyCode === KEYDOWN_ESC) {
+    evt.preventDefault();
     uploadOverlay.classList.add('hidden');
     uploadFileInput.value = '';
   }
@@ -390,7 +391,8 @@ resizeControlPlus.addEventListener('click', function () {
 
 /* Наложение эффекта на изображение */
 
-var scale = document.querySelector('.img-upload__scale');
+var scale = document.querySelector('.scale');
+var scaleLine = scale.querySelector('.scale__line');
 var scalePin = scale.querySelector('.scale__pin');
 // Возможно, следующая коллекция не потребуется
 var effectInputs = document.querySelectorAll('.effects__radio');
@@ -413,34 +415,91 @@ var removeElementClasses = function (element) {
   }
 };
 
-effectNone.addEventListener('click', function () {
+var hideScale = function () {
+  scale.classList.add('hidden');
+};
+
+var showScale = function () {
+  scale.classList.remove('hidden');
+};
+
+var resetImageStyle = function () {
+  imagePreview.style.removeProperty('filter');
+};
+
+var removeEffects = function () {
+  resetImageStyle();
   removeElementClasses(imagePreview);
+  hideScale();
+};
+
+var addEffect = function (effect) {
+  resetImageStyle();
+  removeElementClasses(imagePreview);
+  imagePreview.classList.add('effects__preview--' + effect);
+  showScale();
+};
+
+effectNone.addEventListener('click', function () {
+  removeEffects();
 });
 
 effectChrome.addEventListener('click', function () {
-  removeElementClasses(imagePreview);
-  imagePreview.classList.add('effects__preview--chrome');
+  addEffect('chrome');
 });
 
 effectSepia.addEventListener('click', function () {
-  removeElementClasses(imagePreview);
-  imagePreview.classList.add('effects__preview--sepia');
+  addEffect('sepia');
 });
 
 effectMarvin.addEventListener('click', function () {
-  imagePreview.style.filter = 'invert(100%)';
+  addEffect('marvin');
 });
 
 effectPhobos.addEventListener('click', function () {
-  imagePreview.style.filter = 'blur(3px)';
+  addEffect('phobos');
 });
 
 effectHeat.addEventListener('click', function () {
-  imagePreview.style.filter = 'brightness(3)';
+  addEffect('heat');
 });
 
-// scalePin.addEventListener('mouseup')
+var checkEffectPresence = function (effect) {
+  var isEffectApplied = imagePreview.classList
+    .contains('effects__preview--' + effect);
+  return isEffectApplied;
+};
 
-// scalepin.addEventListener('mouseup', function () {
+var getEffectDepthFromScale = function () {
+  var scaleLineLeft = scaleLine.getBoundingClientRect().left;
+  var scaleLineWidth = scaleLine.getBoundingClientRect().width;
+  var scalePinLeft = scalePin.getBoundingClientRect().left;
+  var scalePinWidth = scalePin.getBoundingClientRect().width;
+  var scalePinCenterX = scalePinLeft + scalePinWidth / 2;
+  var scalePintShift = scalePinCenterX - scaleLineLeft;
+  var rawRelativeShift = scalePintShift / scaleLineWidth;
+  var relativeShift = Math.round(rawRelativeShift * 100) / 100;
+  return relativeShift;
+};
 
-// });
+var scalePinMouseupHandler = function () {
+  var effectDepth = getEffectDepthFromScale();
+
+  if (checkEffectPresence('chrome')) {
+    imagePreview.style.filter = 'grayscale(' + effectDepth + ')';
+  } else if (checkEffectPresence('sepia')) {
+    imagePreview.style.filter = 'sepia(' + effectDepth + ')';
+  } else if (checkEffectPresence('marvin')) {
+    imagePreview.style.filter = 'invert(' + effectDepth * 100 + '%)';
+  } else if (checkEffectPresence('phobos')) {
+    var blurValue = effectDepth * 3;
+    imagePreview.style.filter = 'blur(' + blurValue + 'px)';
+  } else if (checkEffectPresence('heat')) {
+    var brightnessValue = 1 + 2 * effectDepth;
+    imagePreview.style.filter = 'brightness(' + brightnessValue + ')';
+  }
+};
+
+scalePin.addEventListener('mouseup', function () {
+  scalePinMouseupHandler();
+});
