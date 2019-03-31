@@ -392,6 +392,7 @@ resizeControlPlus.addEventListener('click', function () {
 /* Наложение эффекта на изображение */
 
 var scale = document.querySelector('.scale');
+var scaleInput = scale.querySelector('.scale__value');
 var scaleLine = scale.querySelector('.scale__line');
 var scalePin = scale.querySelector('.scale__pin');
 // Возможно, следующая коллекция не потребуется
@@ -437,6 +438,7 @@ var addEffect = function (effect) {
   resetImageStyle();
   removeElementClasses(imagePreview);
   imagePreview.classList.add('effects__preview--' + effect);
+  scaleInput.value = 100;
   showScale();
 };
 
@@ -484,6 +486,7 @@ var getEffectDepthFromScale = function () {
 
 var scalePinMouseupHandler = function () {
   var effectDepth = getEffectDepthFromScale();
+  scaleInput.value = effectDepth * 100;
 
   if (checkEffectPresence('chrome')) {
     imagePreview.style.filter = 'grayscale(' + effectDepth + ')';
