@@ -2,10 +2,10 @@
   "author": "Aleksei Arro",
   "description": "HTML Academy JavaScript level 1 educational project",
   "devDependencies": {
-    "eslint": "5.10.0",
+    "eslint": "5.16.0",
     "eslint-config-htmlacademy": "0.5.2",
-    "stylelint": "9.10.0",
-    "stylelint-scss": "3.5.1"
+    "stylelint": "9.10.1",
+    "stylelint-scss": "3.5.4"
   },
   "license": "ISC",
   "name": "kekstagram",
