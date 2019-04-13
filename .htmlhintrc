@@ -8,11 +8,11 @@
   "id-unique": true,
   "inline-script-disabled": true,
   "inline-style-disabled": true,
-  "tag-pair": true,
-  "tagname-lowercase": true,
-  "title-require": true,
   "space-tab-mixed-disabled": "space",
   "spec-char-escape": true,
   "src-not-empty": true,
-  "style-disabled": true
+  "style-disabled": true,
+  "tag-pair": true,
+  "tagname-lowercase": true,
+  "title-require": true
 }
