@@ -32,7 +32,6 @@ body {
   line-height: 20px;
   color: #ffffff;
   text-transform: uppercase;
-
   background-color: #232321;
 }
 
@@ -51,20 +50,16 @@ main {
 
 .visually-hidden {
   position: absolute;
-
   width: 1px;
   height: 1px;
+  overflow: hidden;
   margin: -1px;
-  border: 0;
   padding: 0;
-
   white-space: nowrap;
-
+  border: 0;
   -webkit-clip-path: inset(100%);
           clip-path: inset(100%);
-
   clip: rect(0 0 0 0);
-  overflow: hidden;
 }
 
 .container {
@@ -81,24 +76,19 @@ main {
 /* Кнопка закрытия */
 
 .cancel {
+  opacity: 0.6;
   display: block;
-  margin: 0;
-  padding: 0;
-
   width: 42px;
   height: 42px;
-
+  margin: 0;
+  padding: 0;
   font-size: 0;
-
   background-color: rgba(255, 255, 255, 0.2);
   background-image: url("../img/icon-cross.svg");
   background-position: center;
   background-repeat: no-repeat;
-
   border: 0;
   border-radius: 2px;
-
-  opacity: 0.6;
 }
 
 .cancel:hover,
@@ -118,18 +108,15 @@ main {
 
 .overlay {
   position: fixed;
+  z-index: 2;
   top: 0;
   left: 0;
-  z-index: 2;
-
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-
   width: 100%;
   height: 100%;
-  padding-top: 60px;
   overflow: auto;
-
+  padding-top: 60px;
   background-color: rgba(0, 0, 0, 0.8);
 }
 
@@ -221,20 +208,17 @@ main {
 }
 
 .picture__stats {
-  display: none;
-
-  margin: 0;
-  padding: 15px;
   position: absolute;
   bottom: 10px;
   left: 50%;
-
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
-
+  display: none;
   -webkit-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
           transform: translateX(-50%);
+  margin: 0;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
 }
 
 .picture__link:hover .picture__stats,
@@ -245,9 +229,8 @@ main {
 }
 
 .picture__stat {
-  padding-left: 30px;
   position: relative;
-
+  padding-left: 30px;
   font-family: "Open Sans", "Arial", sans-serif;
   font-weight: 400;
   color: #ffffff;
@@ -262,23 +245,18 @@ main {
   position: absolute;
   left: 5px;
   top: -7px;
-
+  width: 20px;
+  height: 16px;
   background-image: url("../img/sprite.svg");
   background-size: 100%;
 }
 
 .picture__stat--comments::before {
-  width: 20px;
-  height: 16px;
-
-  background-position: 0 -53px;
+  background-position: 0 -59px;
 }
 
 .picture__stat--likes::before {
-  width: 20px;
-  height: 16px;
-
-  background-position: 0 -80px;
+  background-position: 0 -89px;
 }
 
 
@@ -288,28 +266,24 @@ main {
   -ms-grid-column: 3;
   -ms-grid-column-span: 3;
   grid-column: 3 / span 3;
-
   -ms-grid-row: 1;
   -ms-grid-row-span: 3;
   grid-row: 1 / span 3;
 }
 
 .img-upload__wrapper {
-  margin: 0 auto;
   width: 582px;
-
+  margin: 0 auto;
   text-align: center;
 }
 
 .img-upload__form {
   position: relative;
   min-height: 569px;
-
   background-color: #eed21e;
   background-image: url("../img/logo-background-1.jpg");
   background-repeat: no-repeat;
   background-position: center;
-
   border: none;
 }
 
@@ -318,60 +292,47 @@ main {
 
 .img-upload__start {
   position: relative;
-
+  min-height: 569px;
   margin: 0;
   padding: 0;
-  min-height: 569px;
-
   background-image: url("../img/logo-mask.png");
   background-repeat: no-repeat;
   background-position: center;
-
   border: none;
 }
 
 .img-upload__label {
   position: absolute;
-
   top: 194px;
   left: 203px;
-
   width: 180px;
   height: 181px;
-
   font-size: 0;
-
   background-image: url("../img/upload-button-bg.png");
   background-repeat: no-repeat;
   background-position: center;
-
   cursor: pointer;
 }
 
 .img-upload__label::after {
   content: "";
   position: absolute;
-
   top: 32px;
   left: 47px;
-
   width: 86px;
   height: 114px;
-
   background-image: url("../img/upload-button.svg");
   background-repeat: no-repeat;
   background-position: center;
-
   -webkit-filter: drop-shadow(0 0 10px #943106);
           filter: drop-shadow(0 0 10px #943106);
 }
 
 .img-upload__label:hover::after,
 .img-upload__label:active::after {
+  transform: scale(1.1);
   -webkit-filter: drop-shadow(0 0 10px #622104);
           filter: drop-shadow(0 0 10px #622104);
-
-  transform: scale(1.1);
 }
 
 .img-upload__input:focus + .img-upload__label {
@@ -382,25 +343,20 @@ main {
   position: absolute;
   left: 0;
   top: 0;
-
-  padding-top: 250px;
-
   width: 100%;
   height: 100%;
-
-  font-family: "Open Sans", "Arial", sans-serif;
-  text-align: center;
+  padding-top: 250px;
   font-weight: 700;
   font-size: 20px;
+  font-family: "Open Sans", "Arial", sans-serif;
+  text-align: center;
   color: #ffe753;
-
   background-color: #3c3614;
 }
 
 .img-upload__message--dragndrop {
   font-size: 70px;
   line-height: 70px;
-
   border: 5px dashed #ffe753;
 }
 
@@ -409,12 +365,9 @@ main {
   position: absolute;
   bottom: 40%;
   left: 50%;
-
   width: 300px;
   height: 10px;
-
   background-color: #8a7d2d;
-
   -webkit-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
           transform: translateX(-50%);
@@ -425,12 +378,9 @@ main {
   position: absolute;
   bottom: 40%;
   left: 50%;
-
   width: 200px;
   height: 10px;
-
   background-color: #ffe753;
-
   -webkit-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
           transform: translateX(-50%);
@@ -439,15 +389,11 @@ main {
 .img-upload__message--processing::before {
   content: "";
   position: absolute;
-
-  width: 45px;
-  height: 45px;
-
   bottom: 40%;
   left: 50%;
-
+  width: 45px;
+  height: 45px;
   background-image: url("../img/spinner.svg");
-
   -webkit-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
           transform: translateX(-50%);
@@ -455,27 +401,22 @@ main {
 
 .img-upload__message--error {
   padding-top: 275px;
-
-  font-family: "Open Sans", "Arial", sans-serif;
   font-weight: 400;
+  font-family: "Open Sans", "Arial", sans-serif;
   text-transform: none;
 }
 
 .img-upload__message--error::before {
   content: "";
   position: absolute;
-
-  width: 59px;
-  height: 52px;
-
   top: 150px;
   left: 50%;
-
-  background-image: url("../img/icon-warning.svg");
-
   -webkit-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
           transform: translateX(-50%);
+  width: 59px;
+  height: 52px;
+  background-image: url("../img/icon-warning.svg");
 }
 
 .error__links {
@@ -495,20 +436,16 @@ main {
 
 .img-upload__overlay {
   position: fixed;
+  z-index: 2;
   top: 0;
   left: 0;
-  z-index: 2;
-
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-
   width: 100%;
   height: 100%;
-
+  overflow: auto;
   padding-top: 60px;
   padding-bottom: 60px;
-  overflow: auto;
-
   background-color: rgba(0, 0, 0, 0.8);
 }
 
@@ -524,34 +461,28 @@ main {
   position: absolute;
   top: 0;
   left: 50%;
-
-  font-family: "Open Sans", "Arial", sans-serif;
-  font-weight: 400;
-
   -webkit-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
           transform: translateX(-50%);
+  font-weight: 400;
+  font-family: "Open Sans", "Arial", sans-serif;
 }
 
 .resize {
   margin: 0;
   padding: 10px;
-
   font-size: 0;
   border: 0;
 }
 
 .resize__control {
   position: relative;
-
   width: 33px;
   height: 33px;
   margin: 0;
   padding: 0;
-
-  text-align: center;
   vertical-align: middle;
-
+  text-align: center;
   background-color: rgba(0, 0, 0, 0.5);
   border: 0;
 }

@@ -2,7 +2,7 @@
 
 /*
 Генерация данных для описания фотографий
-----------------------------------------
+========================================
 */
 
 var AMOUNT_OF_PICTURES = 25;
@@ -93,27 +93,6 @@ var generateDescription = function () {
   return generatedDescription;
 };
 
-/*
-Проверка на наличие элемента в массиве
-*/
-
-var checkValueExistenceInArray = function (testingValue, testingArray) {
-  var testAnswer = false;
-
-  for (
-    var testingCounter = 0;
-    testingCounter < testingArray.length;
-    testingCounter += 1
-  ) {
-    if (testingArray[testingCounter] === testingValue) {
-      testAnswer = true;
-      break;
-    }
-  }
-
-  return testAnswer;
-};
-
 /* Выбор случайного целого числа из диапазона от 1 до maxNumber */
 
 var selectRandomIntegerFromRange = function (maxNumber) {
@@ -136,7 +115,7 @@ var generateSetOfUrls = function (totalAmountOfUrls) {
   ) {
     do {
       var numberForUrl = selectRandomIntegerFromRange(totalAmountOfUrls);
-    } while (checkValueExistenceInArray(numberForUrl, setOfNumbers));
+    } while (setOfNumbers.indexOf(numberForUrl) !== -1);
 
     setOfNumbers.push(numberForUrl);
     var urlGenerated = 'photos/' + numberForUrl + '.jpg';
@@ -146,11 +125,11 @@ var generateSetOfUrls = function (totalAmountOfUrls) {
   return setOfUrls;
 };
 
-var urlsForPictures = generateSetOfUrls(AMOUNT_OF_PICTURES);
-
 /*
 Герератор объекта с данными для одной фотографии
 */
+
+var urlsForPictures = generateSetOfUrls(AMOUNT_OF_PICTURES);
 
 var generatePictureData = function (pictureNumber) {
   var pictureData = {};
@@ -163,18 +142,22 @@ var generatePictureData = function (pictureNumber) {
 };
 
 /*
-Создание массива с данными для всех фотографий
+Генератор массива с данными для всех фотографий
 */
 
-var picturesData = [];
+var generatePicturesData = function () {
+  var picturesDataSet = [];
 
-for (
-  var picturesCounter = 0;
-  picturesCounter < AMOUNT_OF_PICTURES;
-  picturesCounter += 1
-) {
-  picturesData.push(generatePictureData(picturesCounter));
-}
+  for (
+    var picturesCounter = 0;
+    picturesCounter < AMOUNT_OF_PICTURES;
+    picturesCounter += 1
+  ) {
+    picturesDataSet.push(generatePictureData(picturesCounter));
+  }
+
+  return picturesDataSet;
+};
 
 /*
 Создание DOM-элемента с фотографией на основе JS-объекта
@@ -205,22 +188,54 @@ var generatePictureBlock = function (pictureObject) {
 ================================================
 */
 
-var temporaryContainerForPictureBlocks = document.createDocumentFragment();
+var picturesData = generatePicturesData();
 
-for (
-  var pictureBlockCounter = 0;
-  pictureBlockCounter < picturesData.length;
-  pictureBlockCounter += 1
-) {
-  var pictureBlock = generatePictureBlock(picturesData[pictureBlockCounter]);
-  temporaryContainerForPictureBlocks.appendChild(pictureBlock);
-}
+var renderPictures = function () {
+  var temporaryContainerForPictureBlocks = document.createDocumentFragment();
 
-var picturesContainer = document.querySelector('.pictures');
-picturesContainer.appendChild(temporaryContainerForPictureBlocks);
+  for (
+    var pictureBlockCounter = 0;
+    pictureBlockCounter < picturesData.length;
+    pictureBlockCounter += 1
+  ) {
+    var pictureBlock = generatePictureBlock(picturesData[pictureBlockCounter]);
+    temporaryContainerForPictureBlocks.appendChild(pictureBlock);
+  }
+
+  var picturesContainer = document.querySelector('.pictures');
+  picturesContainer.appendChild(temporaryContainerForPictureBlocks);
+};
+
+renderPictures();
 
 /*
-Заполнение блока big-picture
+Создание комментария для блока big-picture
+*/
+
+var generateBigPictureComment = function (commentText) {
+  var bigPictureCommentBlock = document.createElement('li');
+  bigPictureCommentBlock.classList.add('social__comment');
+
+  var bigPictureCommentImage = document.createElement('img');
+  bigPictureCommentImage.classList.add('social__picture');
+
+  var avatarNumber = selectRandomIntegerFromRange(6);
+  bigPictureCommentImage.src = 'img/avatar-' + avatarNumber + '.svg';
+  bigPictureCommentImage.alt = 'Аватар комментатора фотографии';
+  bigPictureCommentImage.width = '35';
+  bigPictureCommentImage.height = '35';
+  bigPictureCommentBlock.appendChild(bigPictureCommentImage);
+
+  var bigPictureCommentText = document.createElement('p');
+  bigPictureCommentText.classList.add('social__text');
+  bigPictureCommentText.textContent = commentText;
+  bigPictureCommentBlock.appendChild(bigPictureCommentText);
+
+  return bigPictureCommentBlock;
+};
+
+/*
+Переменные для работы с блоком big-picture
 */
 
 var bigPictureBlock = document.querySelector('.big-picture');
@@ -244,24 +259,9 @@ while (bigPictureSocialCommentsList.firstChild) {
     .removeChild(bigPictureSocialCommentsList.firstChild);
 }
 
-var generateBigPictureComment = function (commentText) {
-  var bigPictureCommentBlock = document.createElement('li');
-  bigPictureCommentBlock.classList.add('social__comment');
-  var bigPictureCommentImage = document.createElement('img');
-  bigPictureCommentImage.classList.add('social__picture');
-  var avatarNumber = selectRandomIntegerFromRange(6);
-  bigPictureCommentImage.src = 'img/avatar-' + avatarNumber + '.svg';
-  bigPictureCommentImage.alt = 'Аватар комментатора фотографии';
-  bigPictureCommentImage.width = '35';
-  bigPictureCommentImage.height = '35';
-  bigPictureCommentBlock.appendChild(bigPictureCommentImage);
-  var bigPictureCommentText = document.createElement('p');
-  bigPictureCommentText.classList.add('social__text');
-  bigPictureCommentText.textContent = commentText;
-  bigPictureCommentBlock.appendChild(bigPictureCommentText);
-
-  return bigPictureCommentBlock;
-};
+/*
+Добавление данных в блок big-picture
+*/
 
 var addDataToBigPicture = function (pictureDataObject) {
   var bigPictureCommentsContainer = document.createDocumentFragment();
@@ -300,7 +300,9 @@ var showBigPicture = function () {
 ==================================
 */
 
-/* Открытие/закрытие формы */
+/*
+Открытие/закрытие формы
+*/
 
 var KEYDOWN_ESC = 27;
 
@@ -309,37 +311,41 @@ var uploadFileInput = uploadForm.querySelector('#upload-file');
 var uploadCancel = uploadForm.querySelector('#upload-cancel');
 var uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
 
+var showPopup = function () {
+  uploadOverlay.classList.remove('hidden');
+};
+
+var hidePopup = function () {
+  uploadOverlay.classList.add('hidden');
+  uploadFileInput.value = null;
+};
+
 var popupEscPressHandler = function (evt) {
   if (evt.keyCode === KEYDOWN_ESC) {
     evt.preventDefault();
-    uploadOverlay.classList.add('hidden');
-    uploadFileInput.value = '';
+    hidePopup();
   }
 };
 
-uploadOverlay.classList.remove('hidden');
-document.addEventListener('keydown', popupEscPressHandler);
-
-var popupOpenHandler = function () {
-  uploadOverlay.classList.remove('hidden');
-  document.addEventListener('keydown', popupEscPressHandler);
-};
-
-var popupCloseHandler = function () {
-  uploadOverlay.classList.add('hidden');
-  uploadFileInput.value = '';
+var popupClickCloseHandler = function () {
+  hidePopup();
   document.removeEventListener('keydown', popupEscPressHandler);
+  uploadFileInput.addEventListener('change', popupClickOpenHandler);
 };
 
-uploadFileInput.addEventListener('change', function () {
-  popupOpenHandler();
-});
+var popupClickOpenHandler = function () {
+  showPopup();
+  uploadCancel.addEventListener('click', popupClickCloseHandler);
+  document.addEventListener('keydown', popupEscPressHandler);
+  uploadFileInput.removeEventListener('change', popupClickOpenHandler);
+};
 
-uploadCancel.addEventListener('click', function () {
-  popupCloseHandler();
-});
+showPopup();
+uploadCancel.addEventListener('click', popupClickCloseHandler);
 
-/* Изменение размера изображения */
+/*
+Изменение размера изображения
+*/
 
 var resizeControlInput = uploadForm.querySelector('.resize__control--value');
 var resizeControlMinus = uploadForm.querySelector('.resize__control--minus');
@@ -389,7 +395,9 @@ resizeControlPlus.addEventListener('click', function () {
   resizeControlPlusClickHandler();
 });
 
-/* Наложение эффекта на изображение */
+/*
+Наложение эффекта на изображение
+*/
 
 var scale = document.querySelector('.scale');
 var scaleInput = scale.querySelector('.scale__value');
