@@ -327,12 +327,6 @@ var popupEscPressHandler = function (evt) {
   }
 };
 
-var popupClickCloseHandler = function () {
-  hidePopup();
-  document.removeEventListener('keydown', popupEscPressHandler);
-  uploadFileInput.addEventListener('change', popupClickOpenHandler);
-};
-
 var popupClickOpenHandler = function () {
   showPopup();
   uploadCancel.addEventListener('click', popupClickCloseHandler);
@@ -340,8 +334,13 @@ var popupClickOpenHandler = function () {
   uploadFileInput.removeEventListener('change', popupClickOpenHandler);
 };
 
-showPopup();
-uploadCancel.addEventListener('click', popupClickCloseHandler);
+var popupClickCloseHandler = function () {
+  hidePopup();
+  document.removeEventListener('keydown', popupEscPressHandler);
+  uploadFileInput.addEventListener('change', popupClickOpenHandler);
+};
+
+popupClickOpenHandler();
 
 /*
 Изменение размера изображения
