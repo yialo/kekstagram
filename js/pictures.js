@@ -352,6 +352,9 @@ var resizeControlPlus = uploadForm.querySelector('.resize__control--plus');
 var imageUploadPreviewWrapper = uploadForm
   .querySelector('.img-upload__preview');
 
+var RESIZE_STEP = 25;
+var SIZE_RANGE = {min: 25, max: 100};
+
 var getResizeValue = function () {
   var resizeValueString = resizeControlInput.value;
   return +resizeValueString.slice(0, -1);
@@ -368,8 +371,8 @@ var setScaleValue = function (value) {
 
 var resizeControlMinusClickHandler = function () {
   var currentResizeValue = getResizeValue();
-  if (currentResizeValue > 25 && currentResizeValue <= 100) {
-    currentResizeValue -= 25;
+  if (currentResizeValue > SIZE_RANGE.min && currentResizeValue <= SIZE_RANGE.max) {
+    currentResizeValue -= RESIZE_STEP;
   }
   setResizeValue(currentResizeValue);
   imageUploadPreviewWrapper
@@ -378,8 +381,8 @@ var resizeControlMinusClickHandler = function () {
 
 var resizeControlPlusClickHandler = function () {
   var currentResizeValue = getResizeValue();
-  if (currentResizeValue >= 25 && currentResizeValue < 100) {
-    currentResizeValue += 25;
+  if (currentResizeValue >= SIZE_RANGE.min && currentResizeValue < SIZE_RANGE.max) {
+    currentResizeValue += RESIZE_STEP;
   }
   setResizeValue(currentResizeValue);
   imageUploadPreviewWrapper
@@ -398,18 +401,17 @@ resizeControlPlus.addEventListener('click', function () {
 Наложение эффекта на изображение
 */
 
-var scale = document.querySelector('.scale');
+var scale = uploadForm.querySelector('.scale');
 var scaleInput = scale.querySelector('.scale__value');
 var scaleLine = scale.querySelector('.scale__line');
-var scalePin = scale.querySelector('.scale__pin');
-// Возможно, следующая коллекция не потребуется
-var effectInputs = document.querySelectorAll('.effects__radio');
-var effectNone = document.querySelector('#effect-none');
-var effectChrome = document.querySelector('#effect-chrome');
-var effectSepia = document.querySelector('#effect-sepia');
-var effectMarvin = document.querySelector('#effect-marvin');
-var effectPhobos = document.querySelector('#effect-phobos');
-var effectHeat = document.querySelector('#effect-heat');
+var scalePin = scaleLine.querySelector('.scale__pin');
+
+var effectNone = uploadForm.querySelector('#effect-none');
+var effectChrome = uploadForm.querySelector('#effect-chrome');
+var effectSepia = uploadForm.querySelector('#effect-sepia');
+var effectMarvin = uploadForm.querySelector('#effect-marvin');
+var effectPhobos = uploadForm.querySelector('#effect-phobos');
+var effectHeat = uploadForm.querySelector('#effect-heat');
 var imagePreview = imageUploadPreviewWrapper.querySelector('img');
 
 var removeElementClasses = function (element) {
