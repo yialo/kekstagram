@@ -414,16 +414,13 @@ var effectPhobos = uploadForm.querySelector('#effect-phobos');
 var effectHeat = uploadForm.querySelector('#effect-heat');
 var imagePreview = imageUploadPreviewWrapper.querySelector('img');
 
-var removeElementClasses = function (element) {
-  var classes = element.classList;
-  var classAmount = classes.length;
-
-  if (classAmount) {
-    for (var i = 0; i < classAmount; i += 1) {
-      classes.remove(classes[i]);
-    }
-  }
-};
+var effects = [
+  {name: 'chrome', element: effectChrome},
+  {name: 'sepia', element: effectSepia},
+  {name: 'marvin', element: effectMarvin},
+  {name: 'phobos', element: effectPhobos},
+  {name: 'heat', element: effectHeat},
+];
 
 var hideScale = function () {
   scale.classList.add('hidden');
@@ -433,65 +430,65 @@ var showScale = function () {
   scale.classList.remove('hidden');
 };
 
-var resetImageStyle = function () {
-  imagePreview.style.removeProperty('filter');
+var getEffectClassname = function (effect) {
+  var effectClassname = 'effects__preview--' + effect;
+  return effectClassname;
+};
+
+var checkEffectPresence = function (effect) {
+  var isEffectApplied = imagePreview.classList
+    .contains(getEffectClassname(effect));
+  return isEffectApplied;
 };
 
 var removeEffects = function () {
-  resetImageStyle();
-  removeElementClasses(imagePreview);
-  hideScale();
+  imagePreview.removeAttribute('style');
+  imagePreview.removeAttribute('class');
 };
 
 var addEffect = function (effect) {
-  resetImageStyle();
-  removeElementClasses(imagePreview);
-  imagePreview.classList.add('effects__preview--' + effect);
-  scaleInput.value = 100;
-  showScale();
+  if (!checkEffectPresence(effect)) {
+    removeEffects();
+    imagePreview.classList.add(getEffectClassname(effect));
+    scaleInput.value = 100;
+    showScale();
+  }
+};
+
+var addEffectElementClickListener = function (effectName, effectElement) {
+  effectElement.addEventListener('click', function () {
+    addEffect(effectName);
+  });
 };
 
 effectNone.addEventListener('click', function () {
   removeEffects();
+  hideScale();
 });
 
-effectChrome.addEventListener('click', function () {
-  addEffect('chrome');
-});
-
-effectSepia.addEventListener('click', function () {
-  addEffect('sepia');
-});
-
-effectMarvin.addEventListener('click', function () {
-  addEffect('marvin');
-});
-
-effectPhobos.addEventListener('click', function () {
-  addEffect('phobos');
-});
-
-effectHeat.addEventListener('click', function () {
-  addEffect('heat');
-});
-
-var checkEffectPresence = function (effect) {
-  var isEffectApplied = imagePreview.classList
-    .contains('effects__preview--' + effect);
-  return isEffectApplied;
-};
+for (
+  var effectCounter = 0;
+  effectCounter < effects.length;
+  effectCounter += 1
+) {
+  addEffectElementClickListener(
+      effects[effectCounter].name,
+      effects[effectCounter].element
+  );
+}
 
 var getEffectDepthFromScale = function () {
   var scaleLineLeft = scaleLine.getBoundingClientRect().left;
-  var scaleLineWidth = scaleLine.getBoundingClientRect().width;
+  var scaleLineWidth = scaleLine.offsetWidth;
   var scalePinLeft = scalePin.getBoundingClientRect().left;
-  var scalePinWidth = scalePin.getBoundingClientRect().width;
+  var scalePinWidth = scalePin.offsetWidth;
   var scalePinCenterX = scalePinLeft + scalePinWidth / 2;
-  var scalePintShift = scalePinCenterX - scaleLineLeft;
-  var rawRelativeShift = scalePintShift / scaleLineWidth;
-  var relativeShift = Math.round(rawRelativeShift * 100) / 100;
-  return relativeShift;
+  var scalePinShift = scalePinCenterX - scaleLineLeft;
+  var relativeShift = scalePinShift / scaleLineWidth;
+  var relativeShiftPercentage = Math.round(relativeShift * 100) / 100;
+  return relativeShiftPercentage;
 };
+
 
 var scalePinMouseupHandler = function () {
   var effectDepth = getEffectDepthFromScale();
@@ -515,3 +512,4 @@ var scalePinMouseupHandler = function () {
 scalePin.addEventListener('mouseup', function () {
   scalePinMouseupHandler();
 });
+
