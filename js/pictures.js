@@ -492,16 +492,16 @@ var getEffectDepthFromScale = function () {
 
 var scalePinMouseupHandler = function () {
   var effectDepth = getEffectDepthFromScale();
-  scaleInput.value = effectDepth * 100;
+  scaleInput.value = 100 * effectDepth;
 
   if (checkEffectPresence('chrome')) {
     imagePreview.style.filter = 'grayscale(' + effectDepth + ')';
   } else if (checkEffectPresence('sepia')) {
     imagePreview.style.filter = 'sepia(' + effectDepth + ')';
   } else if (checkEffectPresence('marvin')) {
-    imagePreview.style.filter = 'invert(' + effectDepth * 100 + '%)';
+    imagePreview.style.filter = 'invert(' + 100 * effectDepth + '%)';
   } else if (checkEffectPresence('phobos')) {
-    var blurValue = effectDepth * 3;
+    var blurValue = 3 * effectDepth;
     imagePreview.style.filter = 'blur(' + blurValue + 'px)';
   } else if (checkEffectPresence('heat')) {
     var brightnessValue = 1 + 2 * effectDepth;
