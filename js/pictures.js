@@ -189,6 +189,7 @@ var generatePictureBlock = function (pictureObject) {
 */
 
 var picturesData = generatePicturesData();
+var picturesContainer = document.querySelector('.pictures');
 
 var renderPictures = function () {
   var temporaryContainerForPictureBlocks = document.createDocumentFragment();
@@ -202,11 +203,15 @@ var renderPictures = function () {
     temporaryContainerForPictureBlocks.appendChild(pictureBlock);
   }
 
-  var picturesContainer = document.querySelector('.pictures');
   picturesContainer.appendChild(temporaryContainerForPictureBlocks);
 };
 
 renderPictures();
+
+/*
+Блок big-picture
+================
+*/
 
 /*
 Создание комментария для блока big-picture
@@ -288,12 +293,31 @@ var addDataToBigPicture = function (pictureDataObject) {
 Функция для показа большого изображения
 */
 
-var showBigPicture = function () {
-  addDataToBigPicture(picturesData[0]);
+var showBigPicture = function (targetPicture) {
+  addDataToBigPicture(targetPicture);
   bigPictureSocialCommentsCount.classList.add('visually-hidden');
   bigPictureCommentLoadingButton.classList.add('visually-hidden');
   bigPictureBlock.classList.remove('hidden');
 };
+
+// showBigPicture(picturesData[0]);
+
+
+/*
+Показ полноэкранных изображений
+===============================
+*/
+
+var imageLinks = picturesContainer.querySelectorAll('.picture__link');
+
+var imageLinkClickHander = function (evt) {
+  evt.preventDefault();
+  var targetPicture = evt.target.querySelector('.picture_img');
+};
+
+// for (var i = 0; i < imageLinks.length; i += 1) {
+//   imageLinks[i].addEventListener('click', )
+// }
 
 /*
 Работа формы обработки изображения
@@ -313,11 +337,17 @@ var uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
 
 var showPopup = function () {
   uploadOverlay.classList.remove('hidden');
+  uploadCancel.addEventListener('click', popupClickCloseHandler);
+  document.addEventListener('keydown', popupEscPressHandler);
+  uploadFileInput.removeEventListener('change', popupClickOpenHandler);
 };
 
 var hidePopup = function () {
   uploadOverlay.classList.add('hidden');
   uploadFileInput.value = null;
+  uploadCancel.removeEventListener('click', popupClickCloseHandler);
+  document.removeEventListener('keydown', popupEscPressHandler);
+  uploadFileInput.addEventListener('change', popupClickOpenHandler);
 };
 
 var popupEscPressHandler = function (evt) {
@@ -329,18 +359,13 @@ var popupEscPressHandler = function (evt) {
 
 var popupClickOpenHandler = function () {
   showPopup();
-  uploadCancel.addEventListener('click', popupClickCloseHandler);
-  document.addEventListener('keydown', popupEscPressHandler);
-  uploadFileInput.removeEventListener('change', popupClickOpenHandler);
 };
 
 var popupClickCloseHandler = function () {
   hidePopup();
-  document.removeEventListener('keydown', popupEscPressHandler);
-  uploadFileInput.addEventListener('change', popupClickOpenHandler);
 };
 
-popupClickOpenHandler();
+uploadFileInput.addEventListener('change', showPopup);
 
 /*
 Изменение размера изображения
@@ -489,7 +514,6 @@ var getEffectDepthFromScale = function () {
   return relativeShiftPercentage;
 };
 
-
 var scalePinMouseupHandler = function () {
   var effectDepth = getEffectDepthFromScale();
   scaleInput.value = 100 * effectDepth;
@@ -512,4 +536,3 @@ var scalePinMouseupHandler = function () {
 scalePin.addEventListener('mouseup', function () {
   scalePinMouseupHandler();
 });
-
