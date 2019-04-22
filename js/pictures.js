@@ -503,6 +503,8 @@ var hideScale = function () {
   scale.classList.add('hidden');
 };
 
+hideScale();
+
 var showScale = function () {
   scale.classList.remove('hidden');
 };
