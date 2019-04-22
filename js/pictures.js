@@ -392,6 +392,8 @@ var showPopup = function () {
 var hidePopup = function () {
   uploadOverlay.classList.add('hidden');
   uploadFileInput.value = null;
+  hashtagField.value = '';
+  commentField.value = '';
   uploadCancel.removeEventListener('click', popupClickCloseHandler);
   document.removeEventListener('keydown', popupDocumentEscPressHandler);
   uploadOverlay.removeEventListener('click', popupOverlayClickHandler);
@@ -593,6 +595,62 @@ scalePin.addEventListener('mouseup', function () {
   scalePinMouseupHandler();
 });
 
+var getHashtags = function () {
+  var rawHashtagString = hashtagField.value;
+  var hashtagString = rawHashtagString.toLowerCase();
+  var hashtags = hashtagString.split(' ');
+
+  return hashtags;
+};
+
+var checkHashtagFirstChar = function (hashtag) {
+  var hasCorrectStart = false;
+  var firstChar = hashtag[0];
+
+  if (firstChar === '#') {
+    hasCorrectStart = true;
+  }
+
+  return hasCorrectStart;
+};
+
 /*
 Работа с полем хэш-тегов
 */
+
+hashtagField.addEventListener('input', function () {
+  var hashtags = getHashtags();
+  var firstHashtag = hashtags[0];
+
+  if (firstHashtag !== '') {
+    if (hashtags.length > 5) {
+      hashtagField.setCustomValidity('Хэштегов должно быть не более 5');
+    } else {
+      for (var i = 0; i < hashtags.length; i += 1) {
+        if (!checkHashtagFirstChar(hashtags[i])) {
+          hashtagField.setCustomValidity(
+              'Каждый хэш-тег должен начинаться с символа решётки (#)'
+          );
+          break;
+        } else if (hashtags[i].length < 2) {
+          hashtagField.setCustomValidity('Хэштег должен содержать не менее 2 символов');
+          break;
+        } else if (hashtags[i].length > 20) {
+          hashtagField.setCustomValidity('Длина хэштега не должна превышать 20 символов');
+          break;
+        } else {
+          for (var j = i + 1; j < hashtags.length; j += 1) {
+            if (hashtags[j] === hashtags[i]) {
+              hashtagField.setCustomValidity('Не должно быть одинаковых хэштегов');
+              break;
+            } else {
+              hashtagField.setCustomValidity('');
+            }
+          }
+        }
+      }
+    }
+  } else {
+    hashtagField.setCustomValidity('');
+  }
+});
