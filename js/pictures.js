@@ -376,8 +376,10 @@ var KEYDOWN_ESC = 27;
 
 var uploadForm = document.querySelector('#upload-select-image');
 var uploadFileInput = uploadForm.querySelector('#upload-file');
-var uploadCancel = uploadForm.querySelector('#upload-cancel');
 var uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
+var uploadCancel = uploadOverlay.querySelector('#upload-cancel');
+var hashtagField = uploadOverlay.querySelector('.text__hashtags');
+var commentField = uploadOverlay.querySelector('.text__description');
 
 var showPopup = function () {
   uploadOverlay.classList.remove('hidden');
@@ -411,7 +413,7 @@ var popupOverlayClickHandler = function (evt) {
 };
 
 var popupDocumentEscPressHandler = function (evt) {
-  if (evt.keyCode === KEYDOWN_ESC) {
+  if (evt.keyCode === KEYDOWN_ESC && document.activeElement !== hashtagField && document.activeElement !== commentField) {
     evt.preventDefault();
     hidePopup();
   }
@@ -590,3 +592,7 @@ var scalePinMouseupHandler = function () {
 scalePin.addEventListener('mouseup', function () {
   scalePinMouseupHandler();
 });
+
+/*
+Работа с полем хэш-тегов
+*/
