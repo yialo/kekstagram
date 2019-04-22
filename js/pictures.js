@@ -195,11 +195,12 @@ var renderPictures = function () {
   var temporaryContainerForPictureBlocks = document.createDocumentFragment();
 
   for (
-    var pictureBlockCounter = 0;
-    pictureBlockCounter < picturesData.length;
-    pictureBlockCounter += 1
+    var pictureBlocksCounter = 0;
+    pictureBlocksCounter < picturesData.length;
+    pictureBlocksCounter += 1
   ) {
-    var pictureBlock = generatePictureBlock(picturesData[pictureBlockCounter]);
+    var currentPictureObject = picturesData[pictureBlocksCounter];
+    var pictureBlock = generatePictureBlock(currentPictureObject);
     temporaryContainerForPictureBlocks.appendChild(pictureBlock);
   }
 
@@ -277,12 +278,12 @@ var addDataToBigPicture = function (pictureDataObject) {
   bigPictureSocialCaption.textContent = pictureDataObject.description;
 
   for (
-    var commentCounter = 0;
-    commentCounter < pictureDataObject.comments.length;
-    commentCounter += 1
+    var commentsCounter = 0;
+    commentsCounter < pictureDataObject.comments.length;
+    commentsCounter += 1
   ) {
     bigPictureCommentsContainer.appendChild(
-        generateBigPictureComment(pictureDataObject.comments[commentCounter])
+        generateBigPictureComment(pictureDataObject.comments[commentsCounter])
     );
   }
 
@@ -308,16 +309,21 @@ var showBigPicture = function (targetPicture) {
 ===============================
 */
 
-var imageLinks = picturesContainer.querySelectorAll('.picture__link');
+var photoLinks = picturesContainer.querySelectorAll('.picture__link');
 
-var imageLinkClickHander = function (evt) {
+var photoLinkClickHander = function (evt) {
   evt.preventDefault();
-  var targetPicture = evt.target.querySelector('.picture_img');
+  var targetPhoto = evt.currentTarget.querySelector('.picture__img');
+  var targetPhotoSrc = targetPhoto.getAttribute('src');
+  var urlNumber = urlsForPictures.indexOf(targetPhotoSrc);
+  var dataObject = picturesData[urlNumber];
+
+  showBigPicture(dataObject);
 };
 
-// for (var i = 0; i < imageLinks.length; i += 1) {
-//   imageLinks[i].addEventListener('click', )
-// }
+for (var i = 0; i < photoLinks.length; i += 1) {
+  photoLinks[i].addEventListener('click', photoLinkClickHander);
+}
 
 /*
 Работа формы обработки изображения

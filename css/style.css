@@ -202,8 +202,8 @@ main {
 }
 
 .picture__img {
-  max-width: auto;
   width: 100%;
+  max-width: none;
   height: auto;
 }
 
