@@ -307,6 +307,7 @@ var showBigPicture = function (targetPicture) {
   bigPictureCloseButton
     .addEventListener('click', bigPictureCloseButtonClickHandler);
   document.addEventListener('keydown', bigPhotoDocumentEscPressHandler);
+  bigPictureBlock.addEventListener('click', bigPictureClickHandler);
 };
 
 var hideBigPicture = function () {
@@ -318,6 +319,13 @@ var hideBigPicture = function () {
   bigPictureCloseButton
     .removeEventListener('click', bigPictureCloseButtonClickHandler);
   document.removeEventListener('keydown', bigPhotoDocumentEscPressHandler);
+  bigPictureBlock.removeEventListener('click', bigPictureClickHandler);
+};
+
+var bigPictureClickHandler = function (evt) {
+  if (evt.target === evt.currentTarget) {
+    hideBigPicture();
+  }
 };
 
 var bigPictureCloseButtonClickHandler = function () {
@@ -335,12 +343,6 @@ var photoLinkClickHander = function (evt) {
 
 var bigPhotoDocumentEscPressHandler = function (evt) {
   if (evt.keyCode === KEYDOWN_ESC) {
-    hideBigPicture();
-  }
-};
-
-var bigPhotoDocumentClickHandler = function (evt) {
-  if (!bigPictureBody.contains(evt.target) && !bigPictureBlock.classList.contains('hidden')) {
     hideBigPicture();
   }
 };
@@ -376,13 +378,12 @@ var uploadForm = document.querySelector('#upload-select-image');
 var uploadFileInput = uploadForm.querySelector('#upload-file');
 var uploadCancel = uploadForm.querySelector('#upload-cancel');
 var uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
-var uploadFormBody = uploadOverlay.querySelector('.img-upload__wrapper');
 
 var showPopup = function () {
   uploadOverlay.classList.remove('hidden');
   uploadCancel.addEventListener('click', popupClickCloseHandler);
   document.addEventListener('keydown', popupDocumentEscPressHandler);
-  document.addEventListener('click', popupDocumentClickHandler);
+  uploadOverlay.addEventListener('click', popupOverlayClickHandler);
   uploadFileInput.removeEventListener('change', popupClickOpenHandler);
 };
 
@@ -391,7 +392,7 @@ var hidePopup = function () {
   uploadFileInput.value = null;
   uploadCancel.removeEventListener('click', popupClickCloseHandler);
   document.removeEventListener('keydown', popupDocumentEscPressHandler);
-  document.removeEventListener('click', popupDocumentClickHandler);
+  uploadOverlay.removeEventListener('click', popupOverlayClickHandler);
   uploadFileInput.addEventListener('change', popupClickOpenHandler);
 };
 
@@ -403,8 +404,8 @@ var popupClickCloseHandler = function () {
   hidePopup();
 };
 
-var popupDocumentClickHandler = function (evt) {
-  if (!uploadFormBody.contains(evt.target)) {
+var popupOverlayClickHandler = function (evt) {
+  if (evt.target === evt.currentTarget) {
     hidePopup();
   }
 };
