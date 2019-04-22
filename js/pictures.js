@@ -332,7 +332,7 @@ var bigPictureCloseButtonClickHandler = function () {
   hideBigPicture();
 };
 
-var photoLinkClickHander = function (evt) {
+var photoLinkClickHandler = function (evt) {
   evt.preventDefault();
   var targetPhoto = evt.currentTarget.querySelector('.picture__img');
   var targetPhotoSrc = targetPhoto.getAttribute('src');
@@ -351,13 +351,13 @@ var photoLinks = picturesContainer.querySelectorAll('.picture__link');
 
 var addPhotoLinksClickHandlers = function () {
   for (var i = 0; i < photoLinks.length; i += 1) {
-    photoLinks[i].addEventListener('click', photoLinkClickHander);
+    photoLinks[i].addEventListener('click', photoLinkClickHandler);
   }
 };
 
 var removePhotoLinksClickHandlers = function () {
   for (var i = 0; i < photoLinks.length; i += 1) {
-    photoLinks[i].removeEventListener('click', photoLinkClickHander);
+    photoLinks[i].removeEventListener('click', photoLinkClickHandler);
   }
 };
 
