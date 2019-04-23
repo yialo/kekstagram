@@ -638,21 +638,31 @@ var hashtagFieldInputHandler = function () {
         } else if (hashtags[i].length > 20) {
           hashtagField.setCustomValidity('Длина хэштега не должна превышать 20 символов');
           break;
-        } else {
+        } else if (hashtags.length !== 1) {
+          var noHashtagRepeat = true;
+
           for (var j = i + 1; j < hashtags.length; j += 1) {
             if (hashtags[j] === hashtags[i]) {
               hashtagField.setCustomValidity('Не должно быть одинаковых хэштегов');
+              noHashtagRepeat = false;
               break;
             } else {
               hashtagField.setCustomValidity('');
             }
           }
+          if (!noHashtagRepeat) {
+            break;
+          }
+        } else {
+          hashtagField.setCustomValidity('');
         }
       }
     }
   } else {
     hashtagField.setCustomValidity('');
   }
+
+  hashtagField.reportValidity();
 };
 
 hashtagField.addEventListener('input', hashtagFieldInputHandler);
