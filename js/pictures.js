@@ -618,7 +618,7 @@ var checkHashtagFirstChar = function (hashtag) {
 Работа с полем хэш-тегов
 */
 
-hashtagField.addEventListener('input', function () {
+var hashtagFieldInputHandler = function () {
   var hashtags = getHashtags();
   var firstHashtag = hashtags[0];
 
@@ -653,4 +653,6 @@ hashtagField.addEventListener('input', function () {
   } else {
     hashtagField.setCustomValidity('');
   }
-});
+};
+
+hashtagField.addEventListener('input', hashtagFieldInputHandler);
