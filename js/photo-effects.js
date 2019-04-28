@@ -9,50 +9,36 @@
   var pin = line.querySelector('.scale__pin');
   var level = line.querySelector('.scale__level');
   var effectsList = overlay.querySelector('.img-upload__effects');
-
-  var hideScale = function () {
-    scale.classList.add('hidden');
-  };
-
-  var setDefaultDepth = function () {
-    level.style.width = '100%';
-    pin.style.left = '100%';
-  };
-
   var currentEffect = 'none';
-  hideScale();
-  setDefaultDepth();
 
   var removeEffect = function () {
     preview.removeAttribute('class');
     preview.removeAttribute('style');
-  };
-
-  var getEffectClassname = function (effect) {
-    return ('effects__preview--' + effect);
+    level.style.width = '100%';
+    pin.style.left = '100%';
+    input.value = '100';
   };
 
   var getEffectClickHandler = function (effect) {
     removeEffect();
     scale.classList.remove('hidden');
-    preview.classList.add(getEffectClassname(effect));
+    preview.classList.add('effects__preview--' + effect);
     currentEffect = effect;
     setControlClickListeners();
   };
 
-  var resetEffect = function () {
+  var resetEffects = function () {
     removeEffect();
-    hideScale();
+    scale.classList.add('hidden');
     currentEffect = 'none';
-    input.value = '100';
+    setControlClickListeners();
   };
 
   var EFFECTS = [
     {
       name: 'none',
       clickHandler: function () {
-        resetEffect();
-        setControlClickListeners();
+        resetEffects();
       },
     },
     {
@@ -121,11 +107,18 @@
     }
   };
 
-  setControlClickListeners();
-
   window.photoEffects = {
-    resetEffect: function () {
-      resetEffect();
+    resetEffects: function () {
+      resetEffects();
+    },
+    removeControlClickListeners: function () {
+      for (var i = 0; i < EFFECTS.length; i += 1) {
+        var effect = EFFECTS[i];
+        if (effect.name !== currentEffect) {
+          getEffectControl(effect.name)
+            .removeEventListener('click', effect.clickHandler);
+        }
+      }
     },
   };
 }());
