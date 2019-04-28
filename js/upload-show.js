@@ -5,8 +5,8 @@
   var fileInput = upload.querySelector('#upload-file');
   var overlay = upload.querySelector('.img-upload__overlay');
   var cancel = overlay.querySelector('#upload-cancel');
-  var hashtag = overlay.querySelector('.text__hashtags');
-  var comment = overlay.querySelector('.text__description');
+  var hashtagField = upload.querySelector('.text__hashtags');
+  var commentField = overlay.querySelector('.text__description');
 
   var showUpload = function () {
     overlay.classList.remove('hidden');
@@ -27,8 +27,8 @@
     window.photoResize.removeClickListeners();
     window.photoEffects.removeClickListeners();
     fileInput.value = '';
-    hashtag.value = '';
-    comment.value = '';
+    hashtagField.value = '';
+    commentField.value = '';
     fileInput.addEventListener('change', inputChangeHandler);
   };
 
@@ -47,7 +47,7 @@
   };
 
   var documentEscPressHandler = function (evt) {
-    if (window.utilities.isEscKeycode(evt) && [hashtag, comment].indexOf(document.activeElement) === -1) {
+    if (window.utilities.isEscKeycode(evt) && [hashtagField, commentField].indexOf(document.activeElement) === -1) {
       evt.preventDefault();
       hideUpload();
     }

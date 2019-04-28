@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var hashtagField = document.querySelector('.text__hashtags');
+
   var getHashtags = function () {
     var rawHashtagString = hashtagField.value;
     var hashtagString = rawHashtagString.toLowerCase();
@@ -12,11 +14,9 @@
   var checkHashtagFirstChar = function (hashtag) {
     var hasCorrectStart = false;
     var firstChar = hashtag[0];
-
     if (firstChar === '#') {
       hasCorrectStart = true;
     }
-
     return hasCorrectStart;
   };
 
@@ -67,5 +67,5 @@
     hashtagField.reportValidity();
   };
 
-hashtagField.addEventListener('input', hashtagFieldInputHandler);
+  hashtagField.addEventListener('input', hashtagFieldInputHandler);
 }());
