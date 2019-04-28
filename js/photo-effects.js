@@ -7,146 +7,125 @@
   var input = scale.querySelector('.scale__value');
   var line = scale.querySelector('.scale__line');
   var pin = line.querySelector('.scale__pin');
+  var level = line.querySelector('.scale__level');
   var effectsList = overlay.querySelector('.img-upload__effects');
-  var effectNone = effectsList.querySelector('#effect-none');
 
   var hideScale = function () {
     scale.classList.add('hidden');
   };
 
+  var setDefaultDepth = function () {
+    level.style.width = '100%';
+    pin.style.left = '100%';
+  };
+
+  var currentEffect = 'none';
   hideScale();
-
-  var getEffectClassname = function (effect) {
-    var effectClassname = 'effects__preview--' + effect;
-    return effectClassname;
-  };
-
-  var checkEffectPresence = function (effect) {
-    var isApplied = preview.classList.contains(getEffectClassname(effect));
-    return isApplied;
-  };
+  setDefaultDepth();
 
   var removeEffect = function () {
-    preview.removeAttribute('style');
     preview.removeAttribute('class');
+    preview.removeAttribute('style');
   };
 
-  var addEffect = function (effect) {
-    if (!checkEffectPresence(effect)) {
-      removeEffect();
-      preview.classList.add(getEffectClassname(effect));
-      input.value = 100;
-      scale.classList.remove('hidden');
-    }
+  var getEffectClassname = function (effect) {
+    return ('effects__preview--' + effect);
   };
 
-  var addEffectElementClickListener = function (effectName, effectElement) {
-    effectElement.addEventListener('click', function () {
-      addEffect(effectName);
-    });
+  var getEffectClickHandler = function (effect) {
+    removeEffect();
+    scale.classList.remove('hidden');
+    preview.classList.add(getEffectClassname(effect));
+    currentEffect = effect;
+    setControlClickListeners();
   };
 
-  effectNone.addEventListener('click', function () {
+  var resetEffect = function () {
     removeEffect();
     hideScale();
-  });
-
-  var getEffectElement = function (effect) {
-    return effectsList.querySelector('#effect-' + effect);
+    currentEffect = 'none';
+    input.value = '100';
   };
 
   var EFFECTS = [
     {
+      name: 'none',
+      clickHandler: function () {
+        resetEffect();
+        setControlClickListeners();
+      },
+    },
+    {
       name: 'chrome',
-      setFilter: function (depth) {
+      clickHandler: function () {
+        getEffectClickHandler('chrome');
+      },
+      getFilter: function (depth) {
         return 'grayscale(' + depth + ')';
       },
     },
     {
       name: 'sepia',
-      setFilter: function (depth) {
-        return 'sepia(' + depth + ')';
+      clickHandler: function () {
+        getEffectClickHandler('sepia');
+      },
+      getFilter: function (depth) {
+        return 'grayscale(' + depth + ')';
       },
     },
     {
       name: 'marvin',
-      setFilter: function (depth) {
+      clickHandler: function () {
+        getEffectClickHandler('marvin');
+      },
+      getFilter: function (depth) {
         return 'invert(' + 100 * depth + '%)';
       },
     },
     {
       name: 'phobos',
-      setFilter: function (depth) {
+      clickHandler: function () {
+        getEffectClickHandler('phobos');
+      },
+      getFilter: function (depth) {
         var blurValue = 3 * depth;
         return 'blur(' + blurValue + 'px)';
       },
     },
     {
       name: 'heat',
-      setFilter: function (depth) {
+      clickHandler: function () {
+        getEffectClickHandler('heat');
+      },
+      getFilter: function (depth) {
         var brightnessValue = 1 + 2 * depth;
         return 'brightness(' + brightnessValue + ')';
       },
     },
   ];
 
-  for (var i = 0; i < EFFECTS.length; i += 1) {
-    addEffectElementClickListener(EFFECTS[i].name, EFFECTS[i].element);
-  }
-
-  var getEffectDepthFromScale = function () {
-    var lineLeft = line.getBoundingClientRect().left;
-    var lineWidth = line.offsetWidth;
-    var pinLeft = pin.getBoundingClientRect().left;
-    var pinWidth = pin.offsetWidth;
-    var pinCenterX = pinLeft + pinWidth / 2;
-    var pinShift = pinCenterX - lineLeft;
-    var relativeShift = pinShift / lineWidth;
-    var relativeShiftPercentage = Math.round(relativeShift * 100) / 100;
-    return relativeShiftPercentage;
+  var getEffectControl = function (effect) {
+    var effectControl = effectsList.querySelector('#effect-' + effect);
+    return effectControl;
   };
 
-  var setEffect = function (effect, depth) {
-    if (checkEffectPresence(effect.name)) {
-      preview.style.filter = effect.setFilter(depth);
+  var setControlClickListeners = function () {
+    for (var i = 0; i < EFFECTS.length; i += 1) {
+      var effect = EFFECTS[i];
+      var control = getEffectControl(effect.name);
+      if (effect.name === currentEffect) {
+        control.removeEventListener('click', effect.clickHandler);
+      } else {
+        control.addEventListener('click', effect.clickHandler);
+      }
     }
   };
 
-  var pinMousedownHandler = function (evt) {
-    var startX = evt.clientX;
+  setControlClickListeners();
 
-    var pinMousemoveHandler = function (moveEvt) {
-      var shift = moveEvt.clientX - startX;
-      startX = moveEvt.clientX;
-      pin.style.left = (pin.offsetLeft + shift) + 'px';
-    };
-
-    var pinMouseupHandler = function () {
-      var effectDepth = getEffectDepthFromScale();
-      input.value = 100 * effectDepth;
-
-      if (checkEffectPresence('chrome')) {
-        preview.style.filter = 'grayscale(' + depth + ')';
-      } else if (checkEffectPresence('sepia')) {
-        preview.style.filter = 'sepia(' + depth + ')';
-      } else if (checkEffectPresence('marvin')) {
-        preview.style.filter = 'invert(' + 100 * depth + '%)';
-      } else if (checkEffectPresence('phobos')) {
-        var blurValue = 3 * depth;
-        preview.style.filter = 'blur(' + blurValue + 'px)';
-      } else if (checkEffectPresence('heat')) {
-        var brightnessValue = 1 + 2 * depth;
-        preview.style.filter = 'brightness(' + brightnessValue + ')';
-      }
-
-      pin.addEventListener('mousemove', pinMousemoveHandler);
-      pin.addEventListener('mouseup', pinMousemoveHandler);
-    };
+  window.photoEffects = {
+    resetEffect: function () {
+      resetEffect();
+    },
   };
-
-  pin.addEventListener('mousedown', pinMousedownHandler);
-
-  // window.photoEffects = {
-  //   addPin
-  // };
 }());

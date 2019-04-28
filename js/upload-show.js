@@ -10,45 +10,47 @@
 
   var showUpload = function () {
     overlay.classList.remove('hidden');
-    cancel.addEventListener('click', popupClickCloseHandler);
-    document.addEventListener('keydown', popupDocumentEscPressHandler);
-    overlay.addEventListener('click', popupOverlayClickHandler);
-    fileInput.removeEventListener('change', popupClickOpenHandler);
+    fileInput.removeEventListener('change', inputChangeHandler);
+    cancel.addEventListener('click', cancelClickHandler);
+    document.addEventListener('keydown', documentEscPressHandler);
+    overlay.addEventListener('click', overlayClickHandler);
     window.photoResize.addClickListeners();
   };
 
   var hideUpload = function () {
     overlay.classList.add('hidden');
+    cancel.removeEventListener('click', cancelClickHandler);
+    document.removeEventListener('keydown', documentEscPressHandler);
+    overlay.removeEventListener('click', overlayClickHandler);
+    window.photoResize.resetResize();
+    window.photoResize.removeClickListeners();
+    window.photoEffects.resetEffect();
     fileInput.value = '';
     hashtag.value = '';
     comment.value = '';
-    cancel.removeEventListener('click', popupClickCloseHandler);
-    document.removeEventListener('keydown', popupDocumentEscPressHandler);
-    overlay.removeEventListener('click', popupOverlayClickHandler);
-    fileInput.addEventListener('change', popupClickOpenHandler);
-    window.photoResize.removeClickListeners();
+    fileInput.addEventListener('change', inputChangeHandler);
   };
 
-  var popupClickOpenHandler = function () {
+  var inputChangeHandler = function () {
     showUpload();
   };
 
-  var popupClickCloseHandler = function () {
+  var cancelClickHandler = function () {
     hideUpload();
   };
 
-  var popupOverlayClickHandler = function (evt) {
+  var overlayClickHandler = function (evt) {
     if (evt.target === evt.currentTarget) {
       hideUpload();
     }
   };
 
-  var popupDocumentEscPressHandler = function (evt) {
+  var documentEscPressHandler = function (evt) {
     if (window.utilities.isEscKeycode(evt) && [hashtag, comment].indexOf(document.activeElement) === -1) {
       evt.preventDefault();
       hideUpload();
     }
   };
 
-  fileInput.addEventListener('change', showUpload);
+  fileInput.addEventListener('change', inputChangeHandler);
 }());

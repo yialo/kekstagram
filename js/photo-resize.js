@@ -2,7 +2,7 @@
 
 (function () {
   var overlay = document.querySelector('.img-upload__overlay');
-  var preview = overlay.querySelector('img');
+  var preview = overlay.querySelector('.img-upload__preview');
   var input = overlay.querySelector('.resize__control--value');
   var minus = overlay.querySelector('.resize__control--minus');
   var plus = overlay.querySelector('.resize__control--plus');
@@ -47,6 +47,10 @@
     removeClickListeners: function () {
       minus.removeEventListener('click', minusClickHandler);
       plus.removeEventListener('click', plusClickHandler);
+    },
+    resetResize: function () {
+      preview.removeAttribute('style');
+      input.value = '100%';
     },
   };
 }());
