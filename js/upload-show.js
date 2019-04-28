@@ -41,7 +41,7 @@
   };
 
   var overlayClickHandler = function (evt) {
-    if (evt.target === evt.currentTarget) {
+    if (evt.target === evt.currentTarget && document.activeElement !== window.photoEffects.scalePin) {
       hideUpload();
     }
   };
