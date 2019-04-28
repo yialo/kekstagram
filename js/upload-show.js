@@ -16,7 +16,7 @@
     overlay.addEventListener('click', overlayClickHandler);
     window.photoResize.addClickListeners();
     window.photoResize.resetResize();
-    window.photoEffects.resetEffects();
+    window.photoEffects.setOriginalState();
   };
 
   var hideUpload = function () {
@@ -25,7 +25,7 @@
     document.removeEventListener('keydown', documentEscPressHandler);
     overlay.removeEventListener('click', overlayClickHandler);
     window.photoResize.removeClickListeners();
-    window.photoEffects.removeControlClickListeners();
+    window.photoEffects.removeClickListeners();
     fileInput.value = '';
     hashtag.value = '';
     comment.value = '';

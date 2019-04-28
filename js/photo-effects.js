@@ -11,7 +11,7 @@
   var effectsList = overlay.querySelector('.img-upload__effects');
   var currentEffect = 'none';
 
-  var removeEffect = function () {
+  var clearEffects = function () {
     pin.removeEventListener('mousedown', pinMousedownHandler);
     preview.removeAttribute('class');
     preview.removeAttribute('style');
@@ -20,8 +20,15 @@
     input.value = '100';
   };
 
+  var setOriginalState = function () {
+    clearEffects();
+    scale.classList.add('hidden');
+    currentEffect = 'none';
+    setControlClickListeners();
+  };
+
   var getEffectClickHandler = function (effect) {
-    removeEffect();
+    clearEffects();
     scale.classList.remove('hidden');
     preview.classList.add('effects__preview--' + effect);
     currentEffect = effect;
@@ -29,33 +36,11 @@
     pin.addEventListener('mousedown', pinMousedownHandler);
   };
 
-  var resetEffects = function () {
-    removeEffect();
-    scale.classList.add('hidden');
-    currentEffect = 'none';
-    setControlClickListeners();
-  };
-
-  var EFFECT_NAMES = ['none', 'chrome', 'sepia', 'marvin', 'phobos', 'heat'];
-
-  var getClickHandler = function (effect) {
-    if (effect === 'none') {
-      resetEffects();
-    } else {
-      removeEffect();
-      scale.classList.remove('hidden');
-      preview.classList.add('effects__preview--' + effect);
-      currentEffect = effect;
-      setControlClickListeners();
-      pin.addEventListener('mousedown', pinMousedownHandler);
-    }
-  };
-
   var EFFECTS = [
     {
       name: 'none',
       clickHandler: function () {
-        resetEffects();
+        setOriginalState();
       },
     },
     {
@@ -91,29 +76,29 @@
   ];
 
   var FILTERS = {
-    chrome: {
-      getValue: function (depth) {
+    'chrome': {
+      getCssValue: function (depth) {
         return 'grayscale(' + depth + ')';
       },
     },
-    sepia: {
-      getValue: function (depth) {
+    'sepia': {
+      getCssValue: function (depth) {
         return 'sepia(' + depth + ')';
       },
     },
-    marvin: {
-      getValue: function (depth) {
+    'marvin': {
+      getCssValue: function (depth) {
         return 'invert(' + 100 * depth + '%)';
       },
     },
-    phobos: {
-      getValue: function (depth) {
+    'phobos': {
+      getCssValue: function (depth) {
         var blurValue = 3 * depth;
         return 'blur(' + blurValue + 'px)';
       },
     },
-    heat: {
-      getValue: function (depth) {
+    'heat': {
+      getCssValue: function (depth) {
         var brightnessValue = 1 + 2 * depth;
         return 'brightness(' + brightnessValue + ')';
       },
@@ -129,10 +114,10 @@
     for (var i = 0; i < EFFECTS.length; i += 1) {
       var effect = EFFECTS[i];
       var control = getEffectControl(effect.name);
-      if (effect.name === currentEffect) {
-        control.removeEventListener('click', effect.clickHandler);
-      } else {
+      if (effect.name !== currentEffect) {
         control.addEventListener('click', effect.clickHandler);
+      } else {
+        control.removeEventListener('click', effect.clickHandler);
       }
     }
   };
@@ -155,7 +140,7 @@
       }
 
       var effectDepth = pinLeft / lineWidth;
-      var filterValue = FILTERS[currentEffect].getValue(effectDepth);
+      var filterValue = FILTERS[currentEffect].getCssValue(effectDepth);
       preview.style.filter = filterValue;
       input.value = Math.round(100 * effectDepth);
 
@@ -173,10 +158,10 @@
 
   window.photoEffects = {
     scalePin: pin,
-    resetEffects: function () {
-      resetEffects();
+    setOriginalState: function () {
+      setOriginalState();
     },
-    removeControlClickListeners: function () {
+    removeClickListeners: function () {
       for (var i = 0; i < EFFECTS.length; i += 1) {
         var effect = EFFECTS[i];
         if (effect.name !== currentEffect) {
