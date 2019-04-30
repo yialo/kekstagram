@@ -1,7 +1,8 @@
 'use strict';
 
 (function () {
-  var hashtagField = document.querySelector('.text__hashtags');
+  var form = document.querySelector('.img-upload__form');
+  var hashtagField = form.querySelector('.text__hashtags');
 
   var getHashtags = function () {
     var rawHashtagString = hashtagField.value;
@@ -67,12 +68,21 @@
     hashtagField.reportValidity();
   };
 
+  var formSubmitHandler = function (evt) {
+    evt.preventDefault();
+    window.backend.upload(new FormData(form), function () {
+      window.showUploadForm.hideUpload();
+    });
+  };
+
   window.formValidation = {
-    addHandler: function () {
+    addHandlers: function () {
       hashtagField.addEventListener('input', hashtagFieldInputHandler);
+      form.addEventListener('submit', formSubmitHandler);
     },
-    removeHandler: function () {
+    removeHandlers: function () {
       hashtagField.removeEventListener('input', hashtagFieldInputHandler);
+      form.removeEventListener('submit', formSubmitHandler);
     },
   };
 }());

@@ -17,7 +17,7 @@
     window.photoResize.addClickListeners();
     window.photoResize.resetResize();
     window.photoEffects.setOriginalState();
-    window.formValidation.addHandler();
+    window.formValidation.addHandlers();
   };
 
   var hideUpload = function () {
@@ -27,7 +27,7 @@
     document.removeEventListener('keydown', documentEscPressHandler);
     window.photoResize.removeClickListeners();
     window.photoEffects.removeClickListeners();
-    window.formValidation.removeHandler();
+    window.formValidation.removeHandlers();
     fileInput.value = '';
     hashtagField.value = '';
     commentField.value = '';
@@ -50,4 +50,10 @@
   };
 
   fileInput.addEventListener('change', inputChangeHandler);
+
+  window.showUploadForm = {
+    hideUpload: function () {
+      hideUpload();
+    },
+  };
 }());

@@ -8,7 +8,7 @@
     var commentImage = document.createElement('img');
     commentImage.classList.add('social__picture');
     commentImage.src = commentData.avatar;
-    commentImage.alt = 'Аватар комментатора фотографии';
+    commentImage.alt = commentData.name;
     commentImage.width = '35';
     commentImage.height = '35';
     commentBlock.appendChild(commentImage);
