@@ -2,6 +2,7 @@
 
 (function () {
   var upload = document.querySelector('.img-upload');
+  var form = upload.querySelector('.img-upload__form');
   var fileInput = upload.querySelector('#upload-file');
   var overlay = upload.querySelector('.img-upload__overlay');
   var cancel = overlay.querySelector('#upload-cancel');
@@ -28,6 +29,7 @@
     window.photoResize.removeClickListeners();
     window.photoEffects.removeClickListeners();
     window.formValidation.removeHandlers();
+    form.reset();
     fileInput.value = '';
     hashtagField.value = '';
     commentField.value = '';
