@@ -7,9 +7,7 @@
   var minus = overlay.querySelector('.resize__control--minus');
   var plus = overlay.querySelector('.resize__control--plus');
 
-  var MIN_SIZE = 25;
-  var MAX_SIZE = 100;
-  var RESIZE_STEP = 25;
+  var Zoom = {MIN: 25, MAX: 100, STEP: 25};
 
   var getResizeValue = function () {
     var resizeValueString = input.value;
@@ -25,16 +23,16 @@
 
   var minusClickHandler = function () {
     var currentValue = getResizeValue();
-    if (currentValue > MIN_SIZE && currentValue <= MAX_SIZE) {
-      currentValue -= RESIZE_STEP;
+    if (currentValue > Zoom.MIN && currentValue <= Zoom.MAX) {
+      currentValue -= Zoom.STEP;
     }
     setResize(currentValue);
   };
 
   var plusClickHandler = function () {
     var currentValue = getResizeValue();
-    if (currentValue >= MIN_SIZE && currentValue < MAX_SIZE) {
-      currentValue += RESIZE_STEP;
+    if (currentValue >= Zoom.MIN && currentValue < Zoom.MAX) {
+      currentValue += Zoom.STEP;
     }
     setResize(currentValue);
   };

@@ -6,24 +6,24 @@
   };
 
   var AMOUNT_OF_PHOTOS = 25;
-
-  var COMMENT_SENTENCES = [
-    'Всё отлично!',
-    'В целом всё неплохо. Но не всё.',
-    'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-    'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-    'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-    'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
-  ];
-
-  var DESCRIPTION_SENTENCES = [
-    'Тестим новую камеру!',
-    'Затусили с друзьями на море',
-    'Как же круто тут кормят',
-    'Отдыхаем...',
-    'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
-    'Вот это тачка!',
-  ];
+  var Sentences = {
+    COMMENT: [
+      'Всё отлично!',
+      'В целом всё неплохо. Но не всё.',
+      'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+      'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+      'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+      'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
+    ],
+    DESCRIPTION: [
+      'Тестим новую камеру!',
+      'Затусили с друзьями на море',
+      'Как же круто тут кормят',
+      'Отдыхаем...',
+      'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
+      'Вот это тачка!',
+    ]
+  };
 
   var getAmountOfLikes = function () {
     return (15 + Math.round(Math.random() * 185));
@@ -31,16 +31,16 @@
 
   var getComments = function () {
     var comments = [];
-    var firstSentenceIndex = getRandomArrayIndex(COMMENT_SENTENCES);
-    var firstSentence = COMMENT_SENTENCES[firstSentenceIndex];
+    var firstSentenceIndex = getRandomArrayIndex(Sentences.COMMENT);
+    var firstSentence = Sentences.COMMENT[firstSentenceIndex];
     comments.push(firstSentence);
 
     if (window.utilities.binaryTester()) {
       do {
-        var secondSentenceIndex = getRandomArrayIndex(COMMENT_SENTENCES);
+        var secondSentenceIndex = getRandomArrayIndex(Sentences.COMMENT);
       } while (secondSentenceIndex === firstSentenceIndex);
 
-      var secondSentence = COMMENT_SENTENCES[secondSentenceIndex];
+      var secondSentence = Sentences.COMMENT[secondSentenceIndex];
       comments.push(secondSentence);
     }
 
@@ -49,7 +49,7 @@
 
   var getDescription = function () {
     var description = window.utilities
-      .getRandomArrayElement(DESCRIPTION_SENTENCES);
+      .getRandomArrayElement(Sentences.DESCRIPTION);
     return description;
   };
 

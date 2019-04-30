@@ -75,7 +75,7 @@
     },
   ];
 
-  var FILTERS = {
+  var filterMap = {
     'chrome': {
       getCssValue: function (depth) {
         return 'grayscale(' + depth + ')';
@@ -140,7 +140,7 @@
       }
 
       var effectDepth = pinLeft / lineWidth;
-      var filterValue = FILTERS[currentEffect].getCssValue(effectDepth);
+      var filterValue = filterMap[currentEffect].getCssValue(effectDepth);
       preview.style.filter = filterValue;
       input.value = Math.round(100 * effectDepth);
 
