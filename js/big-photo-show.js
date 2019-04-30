@@ -12,6 +12,7 @@
     socialCommentsCount.classList.add('visually-hidden');
     loadButton.classList.add('visually-hidden');
     photo.classList.remove('hidden');
+    document.body.classList.add('modal-open');
     removePhotoLinksClickHandlers();
     closeButton
       .addEventListener('click', bigPictureCloseButtonClickHandler);
@@ -21,6 +22,7 @@
 
   var hideBigPhoto = function () {
     photo.classList.add('hidden');
+    document.body.classList.remove('modal-open');
     socialCommentsCount.classList.remove('visually-hidden');
     loadButton.classList.remove('visually-hidden');
     addPhotoLinksClickHandlers();

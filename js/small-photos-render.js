@@ -19,12 +19,12 @@
     return photoBlock;
   };
 
-  var renderPhotos = function () {
+  var renderPhotos = function (photosData) {
     var container = document.querySelector('.pictures');
     var temporaryContainer = document.createDocumentFragment();
 
-    for (var i = 0; i < window.smallPhotosData.totalAmount; i += 1) {
-      var photoData = window.smallPhotosData.fullSet[i];
+    for (var i = 0; i < photosData.length; i += 1) {
+      var photoData = photosData[i];
       var photo = createPhoto(photoData);
       temporaryContainer.appendChild(photo);
     }
@@ -32,5 +32,18 @@
     container.appendChild(temporaryContainer);
   };
 
-  renderPhotos();
+  var renderErrorMessage = function (message) {
+    var errContainer = document.createElement('span');
+    var css = errContainer.style;
+    errContainer.textContent = message;
+    css.position = 'absolute';
+    css.zIndex = '1';
+    css.top = '16px';
+    css.left = '16px';
+    css.textTransform = 'uppercase';
+    css.color = 'red';
+    document.querySelector('main').appendChild(errContainer);
+  };
+
+  window.backend.download(renderPhotos, renderErrorMessage);
 }());

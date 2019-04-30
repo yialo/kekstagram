@@ -13,7 +13,6 @@
     fileInput.removeEventListener('change', inputChangeHandler);
     cancel.addEventListener('click', cancelClickHandler);
     document.addEventListener('keydown', documentEscPressHandler);
-    overlay.addEventListener('click', overlayClickHandler);
     window.photoResize.addClickListeners();
     window.photoResize.resetResize();
     window.photoEffects.setOriginalState();
@@ -23,7 +22,6 @@
     overlay.classList.add('hidden');
     cancel.removeEventListener('click', cancelClickHandler);
     document.removeEventListener('keydown', documentEscPressHandler);
-    overlay.removeEventListener('click', overlayClickHandler);
     window.photoResize.removeClickListeners();
     window.photoEffects.removeClickListeners();
     fileInput.value = '';
@@ -38,12 +36,6 @@
 
   var cancelClickHandler = function () {
     hideUpload();
-  };
-
-  var overlayClickHandler = function (evt) {
-    if (evt.target === evt.currentTarget && document.activeElement !== window.photoEffects.scalePin) {
-      hideUpload();
-    }
   };
 
   var documentEscPressHandler = function (evt) {
