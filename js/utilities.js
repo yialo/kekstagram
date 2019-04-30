@@ -6,13 +6,6 @@
   };
 
   window.utilities = {
-    binaryTester: function () {
-      var result = true;
-      if (Math.round(Math.random()) === 0) {
-        result = false;
-      }
-      return result;
-    },
     getRandomIntegerFromRange: function (maxNumber) {
       return (Math.floor(Math.random() * maxNumber) + 1);
     },

@@ -6,7 +6,6 @@
   var image = photo.querySelector('.big-picture__img img');
   var loadButton = photo.querySelector('.social__comment-loadmore');
   var socialCommentsCount = photo.querySelector('.social__comment-count');
-  var smallPhotoLinks = document.querySelectorAll('.picture__link');
 
   var showBigPhoto = function () {
     socialCommentsCount.classList.add('visually-hidden');
@@ -15,9 +14,9 @@
     document.body.classList.add('modal-open');
     removePhotoLinksClickHandlers();
     closeButton
-      .addEventListener('click', bigPictureCloseButtonClickHandler);
-    document.addEventListener('keydown', bigPhotoDocumentEscPressHandler);
-    photo.addEventListener('click', bigPictureClickHandler);
+      .addEventListener('click', closeButtonClickHandler);
+    document.addEventListener('keydown', documentEscPressHandler);
+    photo.addEventListener('click', overlayClickHandler);
   };
 
   var hideBigPhoto = function () {
@@ -27,18 +26,18 @@
     loadButton.classList.remove('visually-hidden');
     addPhotoLinksClickHandlers();
     closeButton
-      .removeEventListener('click', bigPictureCloseButtonClickHandler);
-    document.removeEventListener('keydown', bigPhotoDocumentEscPressHandler);
-    photo.removeEventListener('click', bigPictureClickHandler);
+      .removeEventListener('click', closeButtonClickHandler);
+    document.removeEventListener('keydown', documentEscPressHandler);
+    photo.removeEventListener('click', overlayClickHandler);
   };
 
-  var bigPictureClickHandler = function (evt) {
+  var overlayClickHandler = function (evt) {
     if (evt.target === evt.currentTarget) {
       hideBigPhoto();
     }
   };
 
-  var bigPictureCloseButtonClickHandler = function () {
+  var closeButtonClickHandler = function () {
     hideBigPhoto();
   };
 
@@ -48,31 +47,38 @@
     var targetPhotoSrc = targetPhoto.getAttribute('src');
 
     if (targetPhoto.src !== image.src) {
-      var urlNumber = window.smallPhotosData.urlSet.indexOf(targetPhotoSrc);
-      var dataSource = window.smallPhotosData.fullSet[urlNumber];
+      var urlNumber = window.smallPhotosRender.urlSet
+        .indexOf(targetPhotoSrc);
+      var dataSource = window.smallPhotosRender.fullSet[urlNumber];
       window.createBigPhoto(dataSource);
     }
 
     showBigPhoto();
   };
 
-  var bigPhotoDocumentEscPressHandler = function (evt) {
+  var documentEscPressHandler = function (evt) {
     if (window.utilities.isEscKeycode(evt)) {
       hideBigPhoto();
     }
   };
 
   var addPhotoLinksClickHandlers = function () {
+    var smallPhotoLinks = document.querySelectorAll('.picture__link');
     for (var i = 0; i < smallPhotoLinks.length; i += 1) {
       smallPhotoLinks[i].addEventListener('click', photoLinkClickHandler);
     }
   };
 
   var removePhotoLinksClickHandlers = function () {
+    var smallPhotoLinks = document.querySelectorAll('.picture__link');
     for (var i = 0; i < smallPhotoLinks.length; i += 1) {
       smallPhotoLinks[i].removeEventListener('click', photoLinkClickHandler);
     }
   };
 
-  addPhotoLinksClickHandlers();
+  window.showBigPhoto = {
+    addClickHandlers: function () {
+      addPhotoLinksClickHandlers();
+    },
+  };
 }());

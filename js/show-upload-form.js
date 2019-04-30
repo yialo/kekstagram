@@ -10,20 +10,24 @@
 
   var showUpload = function () {
     overlay.classList.remove('hidden');
+    document.body.classList.add('modal-open');
     fileInput.removeEventListener('change', inputChangeHandler);
     cancel.addEventListener('click', cancelClickHandler);
     document.addEventListener('keydown', documentEscPressHandler);
     window.photoResize.addClickListeners();
     window.photoResize.resetResize();
     window.photoEffects.setOriginalState();
+    window.formValidation.addHandler();
   };
 
   var hideUpload = function () {
     overlay.classList.add('hidden');
+    document.body.classList.remove('modal-open');
     cancel.removeEventListener('click', cancelClickHandler);
     document.removeEventListener('keydown', documentEscPressHandler);
     window.photoResize.removeClickListeners();
     window.photoEffects.removeClickListeners();
+    window.formValidation.removeHandler();
     fileInput.value = '';
     hashtagField.value = '';
     commentField.value = '';

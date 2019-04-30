@@ -67,5 +67,12 @@
     hashtagField.reportValidity();
   };
 
-  hashtagField.addEventListener('input', hashtagFieldInputHandler);
+  window.formValidation = {
+    addHandler: function () {
+      hashtagField.addEventListener('input', hashtagFieldInputHandler);
+    },
+    removeHandler: function () {
+      hashtagField.removeEventListener('input', hashtagFieldInputHandler);
+    },
+  };
 }());

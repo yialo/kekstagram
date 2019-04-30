@@ -1,15 +1,13 @@
 'use strict';
 
 (function () {
-  var createBigPhotoCommentElement = function (textContent) {
+  var createBigPhotoCommentElement = function (commentData) {
     var commentBlock = document.createElement('li');
     commentBlock.classList.add('social__comment');
 
     var commentImage = document.createElement('img');
     commentImage.classList.add('social__picture');
-
-    var avatarNumber = window.utilities.getRandomIntegerFromRange(6);
-    commentImage.src = 'img/avatar-' + avatarNumber + '.svg';
+    commentImage.src = commentData.avatar;
     commentImage.alt = 'Аватар комментатора фотографии';
     commentImage.width = '35';
     commentImage.height = '35';
@@ -17,7 +15,7 @@
 
     var commentText = document.createElement('p');
     commentText.classList.add('social__text');
-    commentText.textContent = textContent;
+    commentText.textContent = commentData.message;
     commentBlock.appendChild(commentText);
 
     return commentBlock;
