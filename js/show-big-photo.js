@@ -64,16 +64,16 @@
 
   var addPhotoLinksClickHandlers = function () {
     var smallPhotoLinks = document.querySelectorAll('.picture__link');
-    for (var i = 0; i < smallPhotoLinks.length; i += 1) {
-      smallPhotoLinks[i].addEventListener('click', photoLinkClickHandler);
-    }
+    smallPhotoLinks.forEach(function (link) {
+      link.addEventListener('click', photoLinkClickHandler);
+    });
   };
 
   var removePhotoLinksClickHandlers = function () {
     var smallPhotoLinks = document.querySelectorAll('.picture__link');
-    for (var i = 0; i < smallPhotoLinks.length; i += 1) {
-      smallPhotoLinks[i].removeEventListener('click', photoLinkClickHandler);
-    }
+    smallPhotoLinks.forEach(function (link) {
+      link.removeEventListener('click', photoLinkClickHandler);
+    });
   };
 
   window.showBigPhoto = {

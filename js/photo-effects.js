@@ -106,20 +106,18 @@
   };
 
   var getEffectControl = function (effect) {
-    var effectControl = effectsList.querySelector('#effect-' + effect);
-    return effectControl;
+    return effectsList.querySelector('#effect-' + effect);
   };
 
   var setControlClickListeners = function () {
-    for (var i = 0; i < EFFECTS.length; i += 1) {
-      var effect = EFFECTS[i];
+    EFFECTS.forEach(function (effect) {
       var control = getEffectControl(effect.name);
       if (effect.name !== currentEffect) {
         control.addEventListener('click', effect.clickHandler);
       } else {
         control.removeEventListener('click', effect.clickHandler);
       }
-    }
+    });
   };
 
   var pinMousedownHandler = function (downEvt) {
@@ -162,13 +160,12 @@
       setOriginalState();
     },
     removeClickListeners: function () {
-      for (var i = 0; i < EFFECTS.length; i += 1) {
-        var effect = EFFECTS[i];
+      EFFECTS.forEach(function (effect) {
         if (effect.name !== currentEffect) {
           getEffectControl(effect.name)
             .removeEventListener('click', effect.clickHandler);
         }
-      }
+      });
     },
   };
 }());

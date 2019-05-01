@@ -40,11 +40,10 @@
 
     var commentsContainer = document.createDocumentFragment();
 
-    for (var i = 0; i < dataSource.comments.length; i += 1) {
-      commentsContainer.appendChild(
-          createBigPhotoCommentElement(dataSource.comments[i])
-      );
-    }
+    dataSource.comments.forEach(function (comment) {
+      commentsContainer
+        .appendChild(createBigPhotoCommentElement(comment));
+    });
 
     commentsList.appendChild(commentsContainer);
   };

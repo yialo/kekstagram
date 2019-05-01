@@ -25,13 +25,12 @@
     var container = document.querySelector('.pictures');
     var temporaryContainer = document.createDocumentFragment();
 
-    for (var i = 0; i < photosData.length; i += 1) {
-      var photoData = photosData[i];
+    photosData.forEach(function (photoData) {
       fullSet.push(photoData);
       urlSet.push(photoData.url);
       var photo = createPhoto(photoData);
       temporaryContainer.appendChild(photo);
-    }
+    });
 
     container.appendChild(temporaryContainer);
     window.showBigPhoto.addClickHandlers();
