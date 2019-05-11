@@ -13,8 +13,7 @@
     photo.classList.remove('hidden');
     document.body.classList.add('modal-open');
     removePhotoLinksClickHandlers();
-    closeButton
-      .addEventListener('click', closeButtonClickHandler);
+    closeButton.addEventListener('click', closeButtonClickHandler);
     document.addEventListener('keydown', documentEscPressHandler);
     photo.addEventListener('click', overlayClickHandler);
   };
@@ -25,8 +24,7 @@
     socialCommentsCount.classList.remove('visually-hidden');
     loadButton.classList.remove('visually-hidden');
     addPhotoLinksClickHandlers();
-    closeButton
-      .removeEventListener('click', closeButtonClickHandler);
+    closeButton.removeEventListener('click', closeButtonClickHandler);
     document.removeEventListener('keydown', documentEscPressHandler);
     photo.removeEventListener('click', overlayClickHandler);
   };

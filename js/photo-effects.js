@@ -45,7 +45,9 @@
 
   var noEffect = {
     name: 'none',
-    clickHandler: setOriginalState,
+    clickHandler: function () {
+      setOriginalState();
+    },
   };
 
   var REAL_EFFECT_NAMES = ['chrome', 'sepia', 'marvin', 'phobos', 'heat'];
