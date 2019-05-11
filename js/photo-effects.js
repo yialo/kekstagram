@@ -28,52 +28,33 @@
   };
 
   var getEffectClickHandler = function (effect) {
-    clearEffects();
-    scale.classList.remove('hidden');
-    preview.classList.add('effects__preview--' + effect);
-    currentEffect = effect;
-    setControlClickListeners();
-    pin.addEventListener('mousedown', pinMousedownHandler);
+    return function () {
+      clearEffects();
+      scale.classList.remove('hidden');
+      preview.classList.add('effects__preview--' + effect);
+      currentEffect = effect;
+      setControlClickListeners();
+      pin.addEventListener('mousedown', pinMousedownHandler);
+    };
   };
 
-  var EFFECTS = [
-    {
-      name: 'none',
-      clickHandler: function () {
-        setOriginalState();
-      },
-    },
-    {
-      name: 'chrome',
-      clickHandler: function () {
-        getEffectClickHandler('chrome');
-      },
-    },
-    {
-      name: 'sepia',
-      clickHandler: function () {
-        getEffectClickHandler('sepia');
-      },
-    },
-    {
-      name: 'marvin',
-      clickHandler: function () {
-        getEffectClickHandler('marvin');
-      },
-    },
-    {
-      name: 'phobos',
-      clickHandler: function () {
-        getEffectClickHandler('phobos');
-      },
-    },
-    {
-      name: 'heat',
-      clickHandler: function () {
-        getEffectClickHandler('heat');
-      },
-    },
-  ];
+  var Effect = function (effect) {
+    this.name = effect;
+    this.clickHandler = getEffectClickHandler(effect);
+  };
+
+  var noEffect = {
+    name: 'none',
+    clickHandler: setOriginalState,
+  };
+
+  var REAL_EFFECT_NAMES = ['chrome', 'sepia', 'marvin', 'phobos', 'heat'];
+
+  var effects = [noEffect].concat(
+      REAL_EFFECT_NAMES.map(function (item) {
+        return new Effect(item);
+      })
+  );
 
   var filterMap = {
     'chrome': {
@@ -110,7 +91,7 @@
   };
 
   var setControlClickListeners = function () {
-    EFFECTS.forEach(function (effect) {
+    effects.forEach(function (effect) {
       var control = getEffectControl(effect.name);
       if (effect.name !== currentEffect) {
         control.addEventListener('click', effect.clickHandler);
@@ -160,10 +141,10 @@
       setOriginalState();
     },
     removeClickListeners: function () {
-      EFFECTS.forEach(function (effect) {
-        if (effect.name !== currentEffect) {
-          getEffectControl(effect.name)
-            .removeEventListener('click', effect.clickHandler);
+      effects.forEach(function (item) {
+        if (item.name !== currentEffect) {
+          getEffectControl(item.name)
+            .removeEventListener('click', item.clickHandler);
         }
       });
     },
