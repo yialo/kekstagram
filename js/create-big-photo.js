@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var createBigPhotoCommentElement = function (commentData) {
+  var createCommentElement = function (commentData) {
     var commentBlock = document.createElement('li');
     commentBlock.classList.add('social__comment');
 
@@ -27,24 +27,46 @@
   var likesCount = bigPhotoBody.querySelector('.likes-count');
   var commentsCount = bigPhotoBody.querySelector('.comments-count');
   var commentsList = bigPhotoBody.querySelector('.social__comments');
+  var loadButton = bigPhotoBody.querySelector('.social__comment-loadmore');
+  var socialCommentsCount = bigPhotoBody
+    .querySelector('.social__comment-count');
 
-  window.createBigPhoto = function (dataSource) {
-    while (commentsList.firstChild) {
-      commentsList.removeChild(commentsList.firstChild);
-    }
+  window.createBigPhoto = {
+    create: function (dataSource) {
+      while (commentsList.firstChild) {
+        commentsList.removeChild(commentsList.firstChild);
+      }
 
-    bigPhotoImage.src = dataSource.url;
-    likesCount.textContent = dataSource.likes;
-    commentsCount.textContent = dataSource.comments.length;
-    socialCaption.textContent = dataSource.description;
+      bigPhotoImage.src = dataSource.url;
+      likesCount.textContent = dataSource.likes;
+      commentsCount.textContent = dataSource.comments.length;
+      socialCaption.textContent = dataSource.description;
 
-    var commentsContainer = document.createDocumentFragment();
+      var commentsContainer = document.createDocumentFragment();
+      if (dataSource.comments.length <= 5) {
+        dataSource.comments.forEach(function (comment) {
+          commentsContainer.appendChild(createCommentElement(comment));
+          loadButton.classList.add('hidden');
+          socialCommentsCount.classList.add('hidden');
+        });
+      } else {
+        for (var i = 0; i <= 4; i += 1) {
+          commentsContainer
+            .appendChild(createCommentElement(dataSource.comments[i]));
+        }
+      }
+      commentsList.appendChild(commentsContainer);
+    },
 
-    dataSource.comments.forEach(function (comment) {
-      commentsContainer
-        .appendChild(createBigPhotoCommentElement(comment));
-    });
-
-    commentsList.appendChild(commentsContainer);
+    showAllComments: function (dataSource) {
+      var commentsContainer = document.createDocumentFragment();
+      for (var i = 5; i < dataSource.comments.length; i += 1) {
+        commentsContainer
+          .appendChild(createCommentElement(dataSource.comments[i]));
+      }
+      commentsList.appendChild(commentsContainer);
+      loadButton.classList.add('hidden');
+      socialCommentsCount.classList.add('hidden');
+    },
   };
 }());

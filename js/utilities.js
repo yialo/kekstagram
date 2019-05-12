@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var Keycode = {ENTER: 13, ESC: 27};
   window.utilities = {
     getRandomIntegerFromRange: function (maxNumber) {
       return (Math.floor(Math.random() * maxNumber) + 1);
@@ -14,8 +15,10 @@
       return randomElement;
     },
     isEscKeycode: function (evt) {
-      var ESC_KEYCODE = 27;
-      return (evt.keyCode === ESC_KEYCODE);
+      return (evt.keyCode === Keycode.ESC);
+    },
+    isEnterKeycode: function (evt) {
+      return (evt.keyCode === Keycode.ENTER);
     },
   };
 }());

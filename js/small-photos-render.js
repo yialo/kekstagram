@@ -3,8 +3,6 @@
 (function () {
   var photoBlockTemplate = document.querySelector('#picture')
     .content.querySelector('.picture__link');
-  var fullSet = [];
-  var urlSet = [];
 
   var createPhoto = function (dataSource) {
     var photoBlock = photoBlockTemplate.cloneNode(true);
@@ -22,17 +20,22 @@
   };
 
   var renderPhotos = function (photosData) {
-    var container = document.querySelector('.pictures');
-    var temporaryContainer = document.createDocumentFragment();
+    window.smallPhotosRender = {
+      fullSet: photosData,
+      urlSet: photosData.map(function (item) {
+        return item.url;
+      }),
+    };
 
+    var temporaryContainer = document.createDocumentFragment();
     photosData.forEach(function (photoData) {
-      fullSet.push(photoData);
-      urlSet.push(photoData.url);
       var photo = createPhoto(photoData);
       temporaryContainer.appendChild(photo);
     });
 
+    var container = document.querySelector('.pictures');
     container.appendChild(temporaryContainer);
+
     window.showBigPhoto.addClickHandlers();
   };
 
@@ -50,6 +53,4 @@
   };
 
   window.backend.download(renderPhotos, renderErrorMessage);
-
-  window.smallPhotosRender = {urlSet: urlSet, fullSet: fullSet};
 }());
