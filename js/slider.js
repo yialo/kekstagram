@@ -43,11 +43,8 @@
   };
 
   window.slider = {
-    currentHandler: function () {
-      return null;
-    },
-    setCurrentHandler: function (cb) {
-      this.currentHandler = getMousedownHandler(cb);
+    getHandler: function (cb) {
+      return getMousedownHandler(cb);
     },
   };
 }());

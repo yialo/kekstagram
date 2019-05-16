@@ -12,7 +12,7 @@
   var currentEffect = 'none';
 
   var clearEffects = function () {
-    pin.removeEventListener('mousedown', window.slider.currentHandler);
+    pin.removeEventListener('mousedown', effectSliderHandler);
     preview.removeAttribute('class');
     preview.removeAttribute('style');
     pin.style.left = '100%';
@@ -34,8 +34,7 @@
       preview.classList.add('effects__preview--' + effect);
       currentEffect = effect;
       setControlClickListeners();
-      window.slider.setCurrentHandler(setFilterDepth);
-      pin.addEventListener('mousedown', window.slider.currentHandler);
+      pin.addEventListener('mousedown', effectSliderHandler);
     };
   };
 
@@ -93,6 +92,8 @@
     var filterValue = filterMap[currentEffect].getCssValue(depth);
     preview.style.filter = filterValue;
   };
+
+  var effectSliderHandler = window.slider.getHandler(setFilterDepth);
 
   var getEffectControl = function (effect) {
     return effectsList.querySelector('#effect-' + effect);
