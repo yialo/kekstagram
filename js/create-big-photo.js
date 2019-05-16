@@ -39,10 +39,18 @@
     commentsList.appendChild(commentsContainer);
     loadButton.classList.add('hidden');
     socialCommentsCount.classList.add('hidden');
+    loadButton.removeEventListener(
+        'click',
+        window.createBigPhoto.loadmoreClickHandler
+    );
+    loadButton.removeEventListener(
+        'keydown',
+        window.createBigPhoto.loadmoreEnterPressHandler
+    );
   };
 
   window.createBigPhoto = {
-    lastShownPhoto: null,
+    lastShownPhotoIndex: null,
     create: function (dataSource) {
       while (commentsList.firstChild) {
         commentsList.removeChild(commentsList.firstChild);
@@ -72,6 +80,7 @@
           .appendChild(createCommentElement(dataSource.comments[i]));
       }
       commentsList.appendChild(commentsContainer);
+      this.lastShownPhotoIndex = dataSource.index;
     },
 
     loadmoreClickHandler: function () {

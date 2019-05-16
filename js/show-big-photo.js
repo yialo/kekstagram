@@ -41,11 +41,11 @@
     evt.preventDefault();
     var targetPhotoIndex = evt.currentTarget.photoIndex;
 
-    if (targetPhotoIndex !== window.createBigPhoto.lastShownPhoto) {
+    if (targetPhotoIndex !== window.createBigPhoto.lastShownPhotoIndex) {
       var dataSource = window.smallPhotosRender
         .fullSet[targetPhotoIndex];
       window.createBigPhoto.create(dataSource);
-    } else {
+    } else if (!loadButton.classList.contains('hidden')) {
       loadButton.addEventListener(
           'click',
           window.createBigPhoto.loadmoreClickHandler
