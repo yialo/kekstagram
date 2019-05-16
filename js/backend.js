@@ -1,12 +1,13 @@
 'use strict';
 
 (function () {
+  var TIMEOUT = 10000;
   window.backend = {
     download: function (successHandler, errorHandler) {
       var URL = 'https://js.dump.academy/kekstagram/data';
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
-      xhr.timeout = 5000;
+      xhr.timeout = TIMEOUT;
       var errorMessage = '';
 
       xhr.addEventListener('load', function () {
@@ -42,7 +43,7 @@
       var URL = 'https://js.dump.academy/kekstagram';
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
-      xhr.timeout = 5000;
+      xhr.timeout = TIMEOUT;
 
       xhr.addEventListener('load', function () {
         successHandler(xhr.response);

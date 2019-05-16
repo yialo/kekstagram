@@ -9,17 +9,12 @@
     var rawHashtagString = hashtagField.value;
     var hashtagString = rawHashtagString.toLowerCase();
     var hashtags = hashtagString.split(' ');
-
     return hashtags;
   };
 
   var checkHashtagFirstChar = function (hashtag) {
-    var hasCorrectStart = false;
     var firstChar = hashtag[0];
-    if (firstChar === '#') {
-      hasCorrectStart = true;
-    }
-    return hasCorrectStart;
+    return (firstChar === '#');
   };
 
   var clearCustomValidity = function (target) {

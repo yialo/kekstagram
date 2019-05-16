@@ -4,8 +4,9 @@
   var photoBlockTemplate = document.querySelector('#picture')
     .content.querySelector('.picture__link');
 
-  var createPhoto = function (dataSource) {
+  var createPhoto = function (dataSource, index) {
     var photoBlock = photoBlockTemplate.cloneNode(true);
+    photoBlock.photoIndex = index;
     var imageElement = photoBlock.querySelector('.picture__img');
     var likesAmountElement = photoBlock
       .querySelector('.picture__stat--likes');
@@ -28,8 +29,8 @@
     };
 
     var temporaryContainer = document.createDocumentFragment();
-    photosData.forEach(function (photoData) {
-      var photo = createPhoto(photoData);
+    photosData.forEach(function (photoData, i) {
+      var photo = createPhoto(photoData, i);
       temporaryContainer.appendChild(photo);
     });
 

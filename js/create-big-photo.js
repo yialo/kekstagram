@@ -31,7 +31,18 @@
   var socialCommentsCount = bigPhotoBody
     .querySelector('.social__comment-count');
 
+  var addCommentsRest = function (source) {
+    var commentsContainer = document.createDocumentFragment();
+    for (var i = 5; i < source.comments.length; i += 1) {
+      commentsContainer.appendChild(createCommentElement(source.comments[i]));
+    }
+    commentsList.appendChild(commentsContainer);
+    loadButton.classList.add('hidden');
+    socialCommentsCount.classList.add('hidden');
+  };
+
   window.createBigPhoto = {
+    lastShownPhoto: null,
     create: function (dataSource) {
       while (commentsList.firstChild) {
         commentsList.removeChild(commentsList.firstChild);
@@ -43,30 +54,41 @@
       socialCaption.textContent = dataSource.description;
 
       var commentsContainer = document.createDocumentFragment();
+      var commentsToRender = dataSource.comments.length;
       if (dataSource.comments.length <= 5) {
-        dataSource.comments.forEach(function (comment) {
-          commentsContainer.appendChild(createCommentElement(comment));
-          loadButton.classList.add('hidden');
-          socialCommentsCount.classList.add('hidden');
-        });
+        loadButton.classList.add('hidden');
+        socialCommentsCount.classList.add('hidden');
       } else {
-        for (var i = 0; i <= 4; i += 1) {
-          commentsContainer
-            .appendChild(createCommentElement(dataSource.comments[i]));
-        }
+        this.setLoadmoreClickHandler(dataSource);
+        this.setLoadmoreEnterPressHandler(dataSource);
+        loadButton.classList.remove('hidden');
+        socialCommentsCount.classList.remove('hidden');
+        commentsToRender = 5;
       }
-      commentsList.appendChild(commentsContainer);
-    },
-
-    showAllComments: function (dataSource) {
-      var commentsContainer = document.createDocumentFragment();
-      for (var i = 5; i < dataSource.comments.length; i += 1) {
+      for (var i = 0; i < commentsToRender; i += 1) {
         commentsContainer
           .appendChild(createCommentElement(dataSource.comments[i]));
       }
       commentsList.appendChild(commentsContainer);
-      loadButton.classList.add('hidden');
-      socialCommentsCount.classList.add('hidden');
+    },
+
+    loadmoreClickHandler: function () {
+      return null;
+    },
+    setLoadmoreClickHandler: function (dataSource) {
+      this.loadmoreClickHandler = function () {
+        addCommentsRest(dataSource);
+      };
+    },
+    loadmoreEnterPressHandler: function () {
+      return null;
+    },
+    setLoadmoreEnterPressHandler: function (dataSource) {
+      this.loadmoreEnterPressHandler = function (evt) {
+        if (window.utilities.isEnterKeycode(evt)) {
+          addCommentsRest(dataSource);
+        }
+      };
     },
   };
 }());
