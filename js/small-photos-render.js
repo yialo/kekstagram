@@ -20,16 +20,16 @@
     return photoBlock;
   };
 
-  var getArrayWithIndexProp = function (arr) {
+  var getArrayWithProp = function (arr, prop) {
     arr.forEach(function (item, i) {
-      item.index = i;
+      item[prop] = i;
     });
     return arr;
   };
 
   var renderPhotos = function (photosData) {
     window.smallPhotosRender = {
-      fullSet: getArrayWithIndexProp(photosData),
+      fullSet: getArrayWithProp(photosData, 'index'),
       urlSet: photosData.map(function (item) {
         return item.url;
       }),

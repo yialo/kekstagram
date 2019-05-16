@@ -56,7 +56,6 @@
         errorHandler();
       });
 
-
       xhr.open('POST', URL);
       xhr.send(dataToSend);
     },
