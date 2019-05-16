@@ -17,7 +17,7 @@
     document.addEventListener('keydown', documentEscPressHandler);
     window.photoResize.addClickListeners();
     window.photoResize.resetResize();
-    window.photoEffects.setOriginalState();
+    window.photoEffects.setInitialState();
     window.formValidation.addHandlers();
   };
 
@@ -28,6 +28,7 @@
     document.removeEventListener('keydown', documentEscPressHandler);
     window.photoResize.removeClickListeners();
     window.photoEffects.removeClickListeners();
+    window.photoEffects.clearEffects();
     window.formValidation.removeHandlers();
     form.reset();
     fileInput.value = '';

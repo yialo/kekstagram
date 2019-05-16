@@ -11,25 +11,10 @@
   var effectsList = overlay.querySelector('.img-upload__effects');
   var currentEffect = 'none';
 
-  var clearEffects = function () {
-    pin.removeEventListener('mousedown', effectSliderHandler);
-    preview.removeAttribute('class');
-    preview.removeAttribute('style');
-    pin.style.left = '100%';
-    level.style.width = '100%';
-    input.value = '100';
-  };
-
-  var setOriginalState = function () {
-    clearEffects();
-    scale.classList.add('hidden');
-    currentEffect = 'none';
-    setControlClickListeners();
-  };
-
-  var getEffectClickHandler = function (effect) {
-    return function () {
-      clearEffects();
+  var Effect = function (effect) {
+    this.name = effect;
+    this.clickHandler = function () {
+      window.photoEffects.clearEffects();
       scale.classList.remove('hidden');
       preview.classList.add('effects__preview--' + effect);
       currentEffect = effect;
@@ -38,15 +23,11 @@
     };
   };
 
-  var Effect = function (effect) {
-    this.name = effect;
-    this.clickHandler = getEffectClickHandler(effect);
-  };
-
   var noEffect = {
     name: 'none',
     clickHandler: function () {
-      setOriginalState();
+      window.photoEffects.clearEffects();
+      window.photoEffects.setInitialState();
     },
   };
 
@@ -102,18 +83,27 @@
   var setControlClickListeners = function () {
     effects.forEach(function (effect) {
       var control = getEffectControl(effect.name);
-      if (effect.name !== currentEffect) {
-        control.addEventListener('click', effect.clickHandler);
-      } else {
+      if (effect.name === currentEffect) {
         control.removeEventListener('click', effect.clickHandler);
+      } else {
+        control.addEventListener('click', effect.clickHandler);
       }
     });
   };
 
   window.photoEffects = {
-    scalePin: pin,
-    setOriginalState: function () {
-      setOriginalState();
+    clearEffects: function () {
+      pin.removeEventListener('mousedown', effectSliderHandler);
+      preview.removeAttribute('class');
+      preview.removeAttribute('style');
+      pin.style.left = '100%';
+      level.style.width = '100%';
+      input.value = '100';
+    },
+    setInitialState: function () {
+      scale.classList.add('hidden');
+      currentEffect = 'none';
+      setControlClickListeners();
     },
     removeClickListeners: function () {
       effects.forEach(function (item) {
