@@ -60,7 +60,9 @@
         socialCommentsCount.classList.add('hidden');
       } else {
         this.setLoadmoreClickHandler(dataSource);
+        loadButton.addEventListener('click', this.loadmoreClickHandler);
         this.setLoadmoreEnterPressHandler(dataSource);
+        loadButton.addEventListener('keydown', this.loadmoreEnterPressHandler);
         loadButton.classList.remove('hidden');
         socialCommentsCount.classList.remove('hidden');
         commentsToRender = 5;

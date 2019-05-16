@@ -4,9 +4,9 @@
   var photoBlockTemplate = document.querySelector('#picture')
     .content.querySelector('.picture__link');
 
-  var createPhoto = function (dataSource, index) {
+  var createPhoto = function (dataSource) {
     var photoBlock = photoBlockTemplate.cloneNode(true);
-    photoBlock.photoIndex = index;
+    photoBlock.photoIndex = dataSource.index;
     var imageElement = photoBlock.querySelector('.picture__img');
     var likesAmountElement = photoBlock
       .querySelector('.picture__stat--likes');
@@ -20,17 +20,24 @@
     return photoBlock;
   };
 
+  var getArrayWithIndexProp = function (arr) {
+    arr.forEach(function (item, i) {
+      item.index = i;
+    });
+    return arr;
+  };
+
   var renderPhotos = function (photosData) {
     window.smallPhotosRender = {
-      fullSet: photosData,
+      fullSet: getArrayWithIndexProp(photosData),
       urlSet: photosData.map(function (item) {
         return item.url;
       }),
     };
 
     var temporaryContainer = document.createDocumentFragment();
-    photosData.forEach(function (photoData, i) {
-      var photo = createPhoto(photoData, i);
+    photosData.forEach(function (photoData) {
+      var photo = createPhoto(photoData);
       temporaryContainer.appendChild(photo);
     });
 

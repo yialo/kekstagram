@@ -39,7 +39,7 @@
 
   var photoLinkClickHandler = function (evt) {
     evt.preventDefault();
-    var targetPhotoIndex = evt.target.photoIndex;
+    var targetPhotoIndex = evt.currentTarget.photoIndex;
 
     if (targetPhotoIndex !== window.createBigPhoto.lastShownPhoto) {
       var dataSource = window.smallPhotosRender
