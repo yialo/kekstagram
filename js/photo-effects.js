@@ -12,7 +12,7 @@
   var currentEffect = 'none';
 
   var clearEffects = function () {
-    pin.removeEventListener('mousedown', pinMousedownHandler);
+    pin.removeEventListener('mousedown', window.slider.currentHandler);
     preview.removeAttribute('class');
     preview.removeAttribute('style');
     pin.style.left = '100%';
@@ -34,7 +34,8 @@
       preview.classList.add('effects__preview--' + effect);
       currentEffect = effect;
       setControlClickListeners();
-      pin.addEventListener('mousedown', pinMousedownHandler);
+      window.slider.setCurrentHandler(setFilterDepth);
+      pin.addEventListener('mousedown', window.slider.currentHandler);
     };
   };
 
@@ -88,6 +89,11 @@
     },
   };
 
+  var setFilterDepth = function (depth) {
+    var filterValue = filterMap[currentEffect].getCssValue(depth);
+    preview.style.filter = filterValue;
+  };
+
   var getEffectControl = function (effect) {
     return effectsList.querySelector('#effect-' + effect);
   };
@@ -101,40 +107,6 @@
         control.removeEventListener('click', effect.clickHandler);
       }
     });
-  };
-
-  var pinMousedownHandler = function (downEvt) {
-    var lineWidth = line.offsetWidth;
-    var startX = downEvt.clientX;
-
-    var scaleMousemoveHandler = function (moveEvt) {
-      var pinLeft = pin.offsetLeft;
-      var shift = moveEvt.clientX - startX;
-
-      if (pinLeft + shift > 0 && pinLeft + shift < lineWidth) {
-        pin.style.left = (pinLeft + shift) + 'px';
-        level.style.width = (pinLeft + shift) + 'px';
-      } else if (pinLeft + shift <= 0) {
-        pin.style.left = '0';
-      } else if (pinLeft + shift >= lineWidth) {
-        pin.style.left = lineWidth + 'px';
-      }
-
-      var effectDepth = pinLeft / lineWidth;
-      var filterValue = filterMap[currentEffect].getCssValue(effectDepth);
-      preview.style.filter = filterValue;
-      input.value = Math.round(100 * effectDepth);
-
-      startX = moveEvt.clientX;
-    };
-
-    var documentMouseupHandler = function () {
-      scale.removeEventListener('mousemove', scaleMousemoveHandler);
-      document.removeEventListener('mouseup', documentMouseupHandler);
-    };
-
-    scale.addEventListener('mousemove', scaleMousemoveHandler);
-    document.addEventListener('mouseup', documentMouseupHandler);
   };
 
   window.photoEffects = {
