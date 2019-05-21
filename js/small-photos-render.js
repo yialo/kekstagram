@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  window.smallPhotosRender = {};
   var photoBlockTemplate = document.querySelector('#picture')
     .content.querySelector('.picture__link');
 
@@ -28,12 +29,10 @@
   };
 
   var renderPhotos = function (photosData) {
-    window.smallPhotosRender = {
-      fullSet: getArrayWithProp(photosData, 'index'),
-      urlSet: photosData.map(function (item) {
-        return item.url;
-      }),
-    };
+    window.smallPhotosRender.fullSet = getArrayWithProp(photosData, 'index');
+    window.smallPhotosRender.urlSet = photosData.map(function (item) {
+      return item.url;
+    });
 
     var temporaryContainer = document.createDocumentFragment();
     photosData.forEach(function (photoData) {
