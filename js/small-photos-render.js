@@ -13,11 +13,9 @@
       .querySelector('.picture__stat--likes');
     var commentsAmountElement = photoBlock
       .querySelector('.picture__stat--comments');
-
     imageElement.src = dataSource.url;
     likesAmountElement.textContent = dataSource.likes;
     commentsAmountElement.textContent = dataSource.comments.length;
-
     return photoBlock;
   };
 
@@ -33,16 +31,13 @@
     window.smallPhotosRender.urlSet = photosData.map(function (item) {
       return item.url;
     });
-
     var temporaryContainer = document.createDocumentFragment();
     photosData.forEach(function (photoData) {
       var photo = createPhoto(photoData);
       temporaryContainer.appendChild(photo);
     });
-
     var container = document.querySelector('.pictures');
     container.appendChild(temporaryContainer);
-
     window.showBigPhoto.addClickHandlers();
   };
 

@@ -40,7 +40,6 @@
   var photoLinkClickHandler = function (evt) {
     evt.preventDefault();
     var targetPhotoIndex = evt.currentTarget.photoIndex;
-
     if (targetPhotoIndex !== window.createBigPhoto.lastShownPhotoIndex) {
       var dataSource = window.smallPhotosRender
         .fullSet[targetPhotoIndex];
@@ -74,9 +73,5 @@
     });
   };
 
-  window.showBigPhoto = {
-    addClickHandlers: function () {
-      addPhotoLinksClickHandlers();
-    },
-  };
+  window.showBigPhoto = {addClickHandlers: addPhotoLinksClickHandlers};
 }());

@@ -103,14 +103,13 @@
     );
   };
 
+  var manageFormValidationHandlers = function (action) {
+    hashtagField[action + 'EventListener']('input', hashtagFieldInputHandler);
+    form[action + 'EventListener']('submit', formSubmitHandler);
+  };
+
   window.formValidation = {
-    addHandlers: function () {
-      hashtagField.addEventListener('input', hashtagFieldInputHandler);
-      form.addEventListener('submit', formSubmitHandler);
-    },
-    removeHandlers: function () {
-      hashtagField.removeEventListener('input', hashtagFieldInputHandler);
-      form.removeEventListener('submit', formSubmitHandler);
-    },
+    addHandlers: manageFormValidationHandlers('add'),
+    removeHandlers: manageFormValidationHandlers('remove'),
   };
 }());
