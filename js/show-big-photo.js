@@ -41,7 +41,7 @@
     evt.preventDefault();
     var targetPhotoIndex = evt.currentTarget.photoIndex;
     if (targetPhotoIndex !== window.createBigPhoto.lastShownPhotoIndex) {
-      var dataSource = window.smallPhotos.fullSet[targetPhotoIndex];
+      var dataSource = window.backend.photos[targetPhotoIndex];
       window.createBigPhoto.create(dataSource);
     } else if (!loadButton.classList.contains('hidden')) {
       loadButton.addEventListener(
