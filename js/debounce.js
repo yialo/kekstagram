@@ -2,17 +2,14 @@
 
 (function () {
   var LATENCY = 500;
+  var lastTimeout;
 
   window.debounce = {
-    create: function (callback) {
-      var lastTimeout;
-      return function () {
-        var args = arguments;
-        if (lastTimeout) {
-          clearTimeout(lastTimeout);
-        }
-        lastTimeout = setTimeout(callback.apply(null, args), LATENCY);
-      };
+    set: function (callback) {
+      if (lastTimeout) {
+        clearTimeout(lastTimeout);
+      }
+      lastTimeout = setTimeout(callback, LATENCY);
     },
   };
 }());
