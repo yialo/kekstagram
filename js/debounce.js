@@ -7,10 +7,11 @@
     create: function (callback) {
       var lastTimeout;
       return function () {
+        var args = arguments;
         if (lastTimeout) {
           clearTimeout(lastTimeout);
         }
-        lastTimeout = setTimeout(callback, LATENCY);
+        lastTimeout = setTimeout(callback.apply(null, args), LATENCY);
       };
     },
   };

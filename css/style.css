@@ -145,7 +145,7 @@ main {
   font-family: "Open Sans", "Arial", sans-serif;
   font-weight: 700;
   font-size: 18px;
-  line-height: auto;
+  line-height: normal;
   text-transform: uppercase;
 
   cursor: pointer;
@@ -167,7 +167,7 @@ main {
   font-family: "Open Sans", "Arial", sans-serif;
   font-weight: 700;
   font-size: 18px;
-  line-height: auto;
+  line-height: normal;
 
   cursor: pointer;
 }
