@@ -104,8 +104,11 @@
   };
 
   var manageFormValidationHandlers = function (action) {
-    hashtagField[action + 'EventListener']('input', hashtagFieldInputHandler);
-    form[action + 'EventListener']('submit', formSubmitHandler);
+    return function () {
+      hashtagField[action + 'EventListener']('input', hashtagFieldInputHandler);
+      form[action + 'EventListener']('submit', formSubmitHandler);
+    };
+
   };
 
   window.formValidation = {

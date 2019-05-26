@@ -22,9 +22,6 @@
   };
 
   var bigPhotoBody = document.querySelector('.big-picture__preview');
-  var bigPhotoImage = bigPhotoBody.querySelector('.big-picture__img img');
-  var socialCaption = bigPhotoBody.querySelector('.social__caption');
-  var likesCount = bigPhotoBody.querySelector('.likes-count');
   var commentsCount = bigPhotoBody.querySelector('.comments-count');
   var commentsList = bigPhotoBody.querySelector('.social__comments');
   var loadButton = bigPhotoBody.querySelector('.social__comment-loadmore');
@@ -49,6 +46,10 @@
     );
   };
 
+  var bigPhotoImage = bigPhotoBody.querySelector('.big-picture__img img');
+  var socialCaption = bigPhotoBody.querySelector('.social__caption');
+  var likesCount = bigPhotoBody.querySelector('.likes-count');
+
   window.createBigPhoto = {
     lastShownPhotoIndex: null,
     create: function (dataSource) {
@@ -61,7 +62,6 @@
       commentsCount.textContent = dataSource.comments.length;
       socialCaption.textContent = dataSource.description;
 
-      var commentsContainer = document.createDocumentFragment();
       var commentsToRender = dataSource.comments.length;
       if (dataSource.comments.length <= 5) {
         loadButton.classList.add('hidden');
@@ -75,6 +75,8 @@
         socialCommentsCount.classList.remove('hidden');
         commentsToRender = 5;
       }
+
+      var commentsContainer = document.createDocumentFragment();
       for (var i = 0; i < commentsToRender; i += 1) {
         commentsContainer
           .appendChild(createCommentElement(dataSource.comments[i]));
@@ -82,7 +84,6 @@
       commentsList.appendChild(commentsContainer);
       this.lastShownPhotoIndex = dataSource.index;
     },
-
     loadmoreClickHandler: function () {
       return null;
     },
