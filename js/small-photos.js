@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  window.smallPhotos = {};
   var photoBlockTemplate = document.querySelector('#picture')
     .content.querySelector('.picture__link');
 
@@ -53,20 +52,6 @@
     });
   };
 
-  var getSortFilterClickHandler = function (data) {
-    return function (evt) {
-      window.debounce.set(function () {
-        renderPhotos(data);
-      });
-      changeFilterControlsStates(evt);
-    };
-  };
-
-  var getFilterButton = function (filterName) {
-    return filtersBlock.querySelector('#filter-' + filterName);
-  };
-
-  var SORT_FILTERS = ['popular', 'new', 'discussed'];
   var sortingFilterMap = {
     'popular': function () {
       return window.backend.photos.slice();
@@ -87,13 +72,30 @@
     },
   };
 
+  var filterClickDebounce = window.debounce.create(renderPhotos);
+  var getSortFilterClickHandler = function (filter) {
+    return function (evt) {
+      var data = sortingFilterMap[filter]();
+      filterClickDebounce(data);
+      changeFilterControlsStates(evt);
+    };
+  };
+
+  var getFilterButton = function (filterName) {
+    return filtersBlock.querySelector('#filter-' + filterName);
+  };
+
+  var addFilterButtonClickListener = function (filterName) {
+    var button = getFilterButton(filterName);
+    button.addEventListener('click', getSortFilterClickHandler(filterName));
+  };
+
+  var SORT_FILTERS = ['popular', 'new', 'discussed'];
   var successDownloadHandler = function () {
     renderPhotos(window.backend.photos);
     showFilterControls();
     SORT_FILTERS.forEach(function (filter) {
-      var button = getFilterButton(filter);
-      var photosData = sortingFilterMap[filter]();
-      button.addEventListener('click', getSortFilterClickHandler(photosData));
+      addFilterButtonClickListener(filter);
     });
   };
 
