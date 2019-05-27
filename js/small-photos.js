@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  window.smallPhotos = {};
+  var photosSet;
   var photoBlockTemplate = document.querySelector('#picture')
     .content.querySelector('.picture__link');
 
@@ -54,17 +56,17 @@
 
   var sortingFilterMap = {
     'popular': function () {
-      return window.backend.photos.slice();
+      return photosSet.slice();
     },
     'new': function () {
       var NEW_PHOTOS_AMOUNT = 10;
       return window.utilities.getRandomItemsFromArray(
-          window.backend.photos,
+          photosSet,
           NEW_PHOTOS_AMOUNT
       );
     },
     'discussed': function () {
-      var photos = window.backend.photos.slice();
+      var photos = photosSet.slice();
       photos.sort(function (left, right) {
         return (getCommentsAmount(right) - getCommentsAmount(left));
       });
@@ -90,9 +92,18 @@
     button.addEventListener('click', getSortFilterClickHandler(filterName));
   };
 
+  var addIndexPropToArrayItems = function (arr) {
+    arr.forEach(function (item, i) {
+      item.index = i;
+    });
+    return arr;
+  };
+
   var SORT_FILTERS = ['popular', 'new', 'discussed'];
-  var successDownloadHandler = function () {
-    renderPhotos(window.backend.photos);
+  var successDownloadHandler = function (data) {
+    photosSet = addIndexPropToArrayItems(data);
+    window.smallPhotos.photos = photosSet;
+    renderPhotos(photosSet);
     showFilterControls();
     SORT_FILTERS.forEach(function (filter) {
       addFilterButtonClickListener(filter);

@@ -1,13 +1,6 @@
 'use strict';
 
 (function () {
-  var addIndexPropToArrayItems = function (arr) {
-    arr.forEach(function (item, i) {
-      item.index = i;
-    });
-    return arr;
-  };
-
   var TIMEOUT = 10000;
   window.backend = {};
 
@@ -20,9 +13,7 @@
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
         case 200:
-          var response = xhr.response;
-          window.backend.photos = addIndexPropToArrayItems(response);
-          successHandler(response);
+          successHandler(xhr.response);
           break;
         case 404:
           errorMessage = 'Адрес не существует';
