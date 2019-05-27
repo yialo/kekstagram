@@ -1,9 +1,7 @@
 'use strict';
 
-// FIXME: найти ошибку!
-
 (function () {
-  window.smallPhotos = {currentElements: []};
+  window.smallPhotos = {};
 
   var photoBlockTemplate = document.querySelector('#picture')
     .content.querySelector('.picture__link');
@@ -32,11 +30,12 @@
       var photoEl = container.querySelector('.picture__link');
       container.removeChild(photoEl);
     }
+    window.smallPhotos.currentElements = [];
     var temporaryContainer = document.createDocumentFragment();
     renderingData.forEach(function (dataItem) {
       var photo = createPhoto(dataItem);
-      temporaryContainer.appendChild(photo);
       window.smallPhotos.currentElements.push(photo);
+      temporaryContainer.appendChild(photo);
     });
     container.appendChild(temporaryContainer);
   };
@@ -104,7 +103,7 @@
   };
 
   var initialData = null;
-  var currentPhotosData = [];
+  var currentPhotosData = null;
   var SORT_FILTERS = ['popular', 'new', 'discussed'];
   var successDownloadHandler = function (data) {
     initialData = addIndexPropToArrayItems(data);

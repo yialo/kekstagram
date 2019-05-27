@@ -42,7 +42,10 @@
     evt.preventDefault();
     var targetIndex = evt.currentTarget.photoIndex;
     if (targetIndex !== window.createBigPhoto.lastShownPhotoIndex) {
-      var dataSource = window.smallPhotos.getCurrentData()[targetIndex];
+      var dataSource = window.smallPhotos
+        .getCurrentData().find(function (it) {
+          return (it.index === targetIndex);
+        });
       window.createBigPhoto.create(dataSource);
     } else if (!loadButton.classList.contains('hidden')) {
       loadButton.addEventListener(
@@ -61,8 +64,8 @@
 
   var managePhotoClickHandlers = function (action) {
     return function () {
-      window.smallPhotos.currentElements.forEach(function (link) {
-        link[action + 'EventListener']('click', photoClickHandler);
+      window.smallPhotos.currentElements.forEach(function (el) {
+        el[action + 'EventListener']('click', photoClickHandler);
       });
     };
   };
