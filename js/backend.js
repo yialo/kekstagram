@@ -2,10 +2,14 @@
 
 (function () {
   var TIMEOUT = 10000;
+  var getUrl = function (path) {
+    var URL_BASE = 'https://js.dump.academy/kekstagram';
+    return URL_BASE + path;
+  };
   window.backend = {};
 
   window.backend.download = function (successHandler, errorHandler) {
-    var URL = 'https://js.dump.academy/kekstagram/data';
+    var url = getUrl('/data');
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.timeout = TIMEOUT;
@@ -31,11 +35,11 @@
     xhr.addEventListener('timeout', function () {
       errorHandler('Данные не удалось получить в течение ' + (xhr.timeout / 1000) + ' секунд');
     });
-    xhr.open('GET', URL);
+    xhr.open('GET', url);
     xhr.send();
   };
   window.backend.upload = function (dataToSend, successHandler, errorHandler) {
-    var URL = 'https://js.dump.academy/kekstagram';
+    var url = getUrl('');
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.timeout = TIMEOUT;
@@ -48,7 +52,7 @@
     xhr.addEventListener('timeout', function () {
       errorHandler();
     });
-    xhr.open('POST', URL);
+    xhr.open('POST', url);
     xhr.send(dataToSend);
   };
 }());

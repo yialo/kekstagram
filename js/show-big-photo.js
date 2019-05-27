@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  window.showBigPhoto = {};
   var photo = document.querySelector('.big-picture');
   var closeButton = photo.querySelector('.big-picture__cancel');
   var loadButton = photo.querySelector('.social__comment-loadmore');
@@ -8,7 +9,7 @@
   var showBigPhoto = function () {
     photo.classList.remove('hidden');
     document.body.classList.add('modal-open');
-    removePhotoLinkClickHandlers();
+    removePhotoClickHandlers();
     closeButton.addEventListener('click', closeButtonClickHandler);
     document.addEventListener('keydown', documentEscPressHandler);
     photo.addEventListener('click', overlayClickHandler);
@@ -17,7 +18,7 @@
   var hideBigPhoto = function () {
     photo.classList.add('hidden');
     document.body.classList.remove('modal-open');
-    addPhotoLinkClickHandlers();
+    addPhotoClickHandlers();
     closeButton.removeEventListener('click', closeButtonClickHandler);
     document.removeEventListener('keydown', documentEscPressHandler);
     photo.removeEventListener('click', overlayClickHandler);
@@ -37,11 +38,11 @@
     hideBigPhoto();
   };
 
-  var photoLinkClickHandler = function (evt) {
+  var photoClickHandler = function (evt) {
     evt.preventDefault();
-    var targetPhotoIndex = evt.currentTarget.photoIndex;
-    if (targetPhotoIndex !== window.createBigPhoto.lastShownPhotoIndex) {
-      var dataSource = window.smallPhotos.getInitial()[targetPhotoIndex];
+    var targetIndex = evt.currentTarget.photoIndex;
+    if (targetIndex !== window.createBigPhoto.lastShownPhotoIndex) {
+      var dataSource = window.smallPhotos.getCurrentData()[targetIndex];
       window.createBigPhoto.create(dataSource);
     } else if (!loadButton.classList.contains('hidden')) {
       loadButton.addEventListener(
@@ -58,17 +59,16 @@
     }
   };
 
-  var managePhotoLinkClickHandlers = function (action) {
+  var managePhotoClickHandlers = function (action) {
     return function () {
-      var smallPhotoLinks = document.querySelectorAll('.picture__link');
-      smallPhotoLinks.forEach(function (link) {
-        link[action + 'EventListener']('click', photoLinkClickHandler);
+      window.smallPhotos.currentElements.forEach(function (link) {
+        link[action + 'EventListener']('click', photoClickHandler);
       });
     };
   };
 
-  var addPhotoLinkClickHandlers = managePhotoLinkClickHandlers('add');
-  var removePhotoLinkClickHandlers = managePhotoLinkClickHandlers('remove');
+  var addPhotoClickHandlers = managePhotoClickHandlers('add');
+  var removePhotoClickHandlers = managePhotoClickHandlers('remove');
 
-  window.showBigPhoto = {addClickHandlers: addPhotoLinkClickHandlers};
+  window.showBigPhoto.clickHandler = photoClickHandler;
 }());
