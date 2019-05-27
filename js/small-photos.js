@@ -1,14 +1,15 @@
 'use strict';
 
 (function () {
-  window.smallPhotos = {};
-  var photosSet;
   var photoBlockTemplate = document.querySelector('#picture')
     .content.querySelector('.picture__link');
-
   var getCommentsAmount = function (photo) {
     return photo.comments.length;
   };
+
+  // var photoClickHandler = function (evt) {
+
+  // };
 
   var createPhoto = function (photoData) {
     var photoBlock = photoBlockTemplate.cloneNode(true);
@@ -21,6 +22,7 @@
     imageElement.src = photoData.url;
     likesAmountElement.textContent = photoData.likes;
     commentsAmountElement.textContent = getCommentsAmount(photoData);
+    // photoBlock.addEventListener('click', photoClickHandler);
     return photoBlock;
   };
 
@@ -54,9 +56,13 @@
     });
   };
 
+  var photosSet = [];
+  var getPhotosCopy = function () {
+    return photosSet.slice();
+  };
   var sortingFilterMap = {
     'popular': function () {
-      return photosSet.slice();
+      return getPhotosCopy();
     },
     'new': function () {
       var NEW_PHOTOS_AMOUNT = 10;
@@ -66,11 +72,9 @@
       );
     },
     'discussed': function () {
-      var photos = photosSet.slice();
-      photos.sort(function (left, right) {
+      return getPhotosCopy().sort(function (left, right) {
         return (getCommentsAmount(right) - getCommentsAmount(left));
       });
-      return photos;
     },
   };
 
@@ -102,7 +106,6 @@
   var SORT_FILTERS = ['popular', 'new', 'discussed'];
   var successDownloadHandler = function (data) {
     photosSet = addIndexPropToArrayItems(data);
-    window.smallPhotos.photos = photosSet;
     renderPhotos(photosSet);
     showFilterControls();
     SORT_FILTERS.forEach(function (filter) {
@@ -124,4 +127,10 @@
   };
 
   window.backend.download(successDownloadHandler, renderErrorMessage);
+
+  window.smallPhotos = {
+    getInitial: function () {
+      return getPhotosCopy();
+    },
+  };
 }());
