@@ -1,5 +1,10 @@
 'use strict';
 
+/* TODO:
+  1). Аргумент renderPhotos - currentData?
+  2). Возможно, записать initialData в переменную и сделать функцию копии глобальной
+*/
+
 (function () {
   window.smallPhotos = {};
 
@@ -57,7 +62,7 @@
   };
 
   var getPhotosCopy = function () {
-    return initialData.slice();
+    return window.smallPhotos.initialData.slice();
   };
   var sortingFilterMap = {
     'popular': function () {
@@ -66,7 +71,7 @@
     'new': function () {
       var NEW_PHOTOS_AMOUNT = 10;
       return window.utilities.getRandomItemsFromArray(
-          initialData,
+          window.smallPhotos.initialData,
           NEW_PHOTOS_AMOUNT
       );
     },
@@ -102,12 +107,11 @@
     return arr;
   };
 
-  var initialData = null;
   var currentPhotosData = null;
   var SORT_FILTERS = ['popular', 'new', 'discussed'];
   var successDownloadHandler = function (data) {
-    initialData = addIndexPropToArrayItems(data);
-    currentPhotosData = initialData.slice();
+    window.smallPhotos.initialData = addIndexPropToArrayItems(data);
+    currentPhotosData = getPhotosCopy();
     renderPhotos(currentPhotosData);
     showFilterControls();
     SORT_FILTERS.forEach(function (filter) {
@@ -129,8 +133,4 @@
   };
 
   window.backend.download(successDownloadHandler, renderErrorMessage);
-
-  window.smallPhotos.getCurrentData = function () {
-    return currentPhotosData;
-  };
 }());
