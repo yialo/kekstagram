@@ -22,10 +22,7 @@
     document.removeEventListener('keydown', documentEscPressHandler);
     photo.removeEventListener('click', overlayClickHandler);
     if (!loadButton.classList.contains('hidden')) {
-      loadButton.removeEventListener(
-          'click',
-          window.createBigPhoto.loadmoreClickHandler
-      );
+      window.createBigPhoto.manageLoadButtonListeners('remove');
     }
     addPhotoClickHandlers();
   };
@@ -40,7 +37,6 @@
     hideBigPhoto();
   };
 
-  var BIG_PHOTO_RENDERING_TIMEOUT = 20;
   var photoClickHandler = function (evt) {
     evt.preventDefault();
     var targetIndex = evt.currentTarget.photoIndex;
@@ -48,14 +44,9 @@
       var dataSource = window.smallPhotos.getInitialData()[targetIndex];
       window.createBigPhoto.create(dataSource);
     } else if (!loadButton.classList.contains('hidden')) {
-      loadButton.addEventListener(
-          'click',
-          window.createBigPhoto.loadmoreClickHandler
-      );
+      window.createBigPhoto.manageLoadButtonListeners('add');
     }
-    setTimeout(function () {
-      showBigPhoto();
-    }, BIG_PHOTO_RENDERING_TIMEOUT);
+    showBigPhoto();
   };
 
   var documentEscPressHandler = function (evt) {

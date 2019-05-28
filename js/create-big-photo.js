@@ -1,9 +1,12 @@
 'use strict';
 
 (function () {
+  window.createBigPhoto = {lastShownPhotoIndex: null};
+  var ICON_RENDERING_TIMEOUT = 50;
+
   var createCommentIcon = function (data) {
     var commentIcon = document.createElement('img');
-    commentIcon.classList.add('social__picture');
+    commentIcon.classList.add('social__picture', 'hidden');
     commentIcon.src = data.avatar;
     commentIcon.alt = data.name;
     commentIcon.width = '35';
@@ -68,14 +71,16 @@
     set.forEach(function (it) {
       tempContainer.appendChild(createComment(it));
     });
-    commentsList.appendChild(tempContainer);
+    setTimeout(function () {
+      commentsList.appendChild(tempContainer);
+    }, ICON_RENDERING_TIMEOUT);
   };
 
   var loadButtonEventMaps = [
     {name: 'Click', action: 'click'},
     {name: 'EnterPress', action: 'keydown'},
   ];
-  var manageLoadButtonListeners = function (actionName) {
+  window.createBigPhoto.manageLoadButtonListeners = function (actionName) {
     loadButtonEventMaps.forEach(function (map) {
       loadButton[actionName + 'EventListener'](
           map.action,
@@ -86,57 +91,52 @@
 
   var addCommentsRest = function (source) {
     renderCommmentsSet(source);
-    manageLoadButtonListeners('remove');
+    window.createBigPhoto.manageLoadButtonListeners('remove');
+    window.createBigPhoto.setLoadmoreHandlers(source);
   };
 
   var COMMENTS_LOADING_STEP = 5;
-  window.createBigPhoto = {
-    lastShownPhotoIndex: null,
-    create: function (dataSource) {
-      removePreviousComments();
-      setBigPhotoProps(dataSource);
+  window.createBigPhoto.create = function (dataSource) {
+    removePreviousComments();
+    setBigPhotoProps(dataSource);
 
-      var initialComments = dataSource.comments;
-      var commentsAmount = initialComments.length;
-      var commentsToRender;
-      var commentsAmountToShow;
+    var commentsRest = dataSource.comments;
+    var commentsRestAmount = commentsRest.length;
+    var commentsToRender;
+    var commentsAmountToShow;
 
-      if (commentsAmount <= COMMENTS_LOADING_STEP) {
-        setLoadmoreElementsVisibility('hide');
-        commentsToRender = initialComments;
-        commentsAmountToShow = commentsAmount;
-      } else {
-        setLoadmoreElementsVisibility('show');
-        var commentsRest = initialComments.slice();
-        commentsToRender = commentsRest.splice(COMMENTS_LOADING_STEP);
-        commentsAmountToShow = COMMENTS_LOADING_STEP;
-        this.setLoadmoreClickHandler(commentsRest);
-        loadButton.addEventListener('click', this.loadmoreClickHandler);
-        this.setLoadmoreEnterPressHandler(commentsRest);
-        loadButton.addEventListener('keydown', this.loadmoreEnterPressHandler);
-      }
-      renderCommmentsSet(commentsToRender);
-      setLoadedCommentsCount(commentsAmountToShow);
+    if (commentsRestAmount <= COMMENTS_LOADING_STEP) {
+      setLoadmoreElementsVisibility('hide');
+      commentsToRender = commentsRest;
+      commentsAmountToShow = commentsRestAmount;
+    } else {
+      setLoadmoreElementsVisibility('show');
+      commentsToRender = commentsRest.splice(0, COMMENTS_LOADING_STEP);
+      commentsAmountToShow = COMMENTS_LOADING_STEP;
+      this.setLoadmoreHandlers(commentsRest);
+      window.createBigPhoto.manageLoadButtonListeners('add');
+    }
+    renderCommmentsSet(commentsToRender);
+    setLoadedCommentsCount(commentsAmountToShow);
 
-      this.lastShownPhotoIndex = dataSource.index;
-    },
-    loadmoreClickHandler: function () {
-      return null;
-    },
-    setLoadmoreClickHandler: function (dataSource) {
-      this.loadmoreClickHandler = function () {
+    this.lastShownPhotoIndex = dataSource.index;
+  };
+
+  window.createBigPhoto.loadmoreClickHandler = function () {
+    return null;
+  };
+  window.createBigPhoto.loadmoreEnterPressHandler = function () {
+    return null;
+  };
+
+  window.createBigPhoto.setLoadmoreHandlers = function (dataSource) {
+    this.loadmoreClickHandler = function () {
+      addCommentsRest(dataSource);
+    };
+    this.loadmoreEnterPressHandler = function (evt) {
+      if (window.utilities.isEnterKeycode(evt)) {
         addCommentsRest(dataSource);
-      };
-    },
-    loadmoreEnterPressHandler: function () {
-      return null;
-    },
-    setLoadmoreEnterPressHandler: function (dataSource) {
-      this.loadmoreEnterPressHandler = function (evt) {
-        if (window.utilities.isEnterKeycode(evt)) {
-          addCommentsRest(dataSource);
-        }
-      };
-    },
+      }
+    };
   };
 }());
