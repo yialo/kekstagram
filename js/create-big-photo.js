@@ -2,8 +2,6 @@
 
 (function () {
   window.createBigPhoto = {};
-  var ICON_RENDERING_TIMEOUT = 50;
-
   var createCommentIcon = function (data) {
     var commentIcon = document.createElement('img');
     commentIcon.classList.add('social__picture', 'hidden');
@@ -58,22 +56,12 @@
     socialCommentsCount.firstChild.textContent = newText;
   };
 
-  var loadButton = bigPhotoBody.querySelector('.social__comment-loadmore');
-  var loadmoreActionMap = {'hide': 'add', 'show': 'remove'};
-  var setLoadmoreElementsVisibility = function (action) {
-    [loadButton, socialCommentsCount].forEach(function (el) {
-      el.classList[loadmoreActionMap[action]]('hidden');
-    });
-  };
-
   var renderCommmentsSet = function (commentsData) {
     var tempContainer = document.createDocumentFragment();
     commentsData.forEach(function (it) {
       tempContainer.appendChild(createComment(it));
     });
-    setTimeout(function () {
-      commentsList.appendChild(tempContainer);
-    }, ICON_RENDERING_TIMEOUT);
+    commentsList.appendChild(tempContainer);
   };
 
   var loadmoreClickHandler = function () {
@@ -85,6 +73,7 @@
     }
   };
 
+  var loadButton = bigPhotoBody.querySelector('.social__comment-loadmore');
   window.createBigPhoto.manageLoadButtonListeners = function (actionName) {
     loadButton[actionName + 'EventListener'](
         'click',
@@ -102,28 +91,30 @@
     var commentsToRender;
 
     if (commentsRestAmount <= COMMENTS_LOADING_STEP) {
-      setLoadmoreElementsVisibility('hide');
+      loadButton.classList.add('hidden');
       commentsToRender = commentsRest;
       renderCommmentsSet(commentsToRender);
-      commentsAmountToShow = commentsRestAmount;
+      commentsAmountToShow += commentsRestAmount;
     } else {
-      setLoadmoreElementsVisibility('show');
       commentsToRender = commentsRest.splice(0, COMMENTS_LOADING_STEP);
       renderCommmentsSet(commentsToRender);
       commentsAmountToShow += COMMENTS_LOADING_STEP;
-      setLoadedCommentsCount(commentsAmountToShow);
-      if (!areLoadButtonListenersAdded) {
+      if (isFirstPhotoOpening) {
+        loadButton.classList.remove('hidden');
         window.createBigPhoto.manageLoadButtonListeners('add');
+        isFirstPhotoOpening = false;
       }
     }
+    setLoadedCommentsCount(commentsAmountToShow);
   };
 
   var commentsRest;
   var commentsAmountToShow;
-  var areLoadButtonListenersAdded = false;
+  var isFirstPhotoOpening;
   window.createBigPhoto.create = function (photoData) {
     commentsRest = photoData.comments.slice();
     commentsAmountToShow = 0;
+    isFirstPhotoOpening = true;
     removePreviousComments();
     setBigPhotoProps(photoData);
     renderCommentsRest();
