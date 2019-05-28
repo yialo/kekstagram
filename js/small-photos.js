@@ -1,10 +1,5 @@
 'use strict';
 
-/* TODO:
-  1). Аргумент renderPhotos - currentData?
-  2). Возможно, записать initialData в переменную и сделать функцию копии глобальной
-*/
-
 (function () {
   window.smallPhotos = {};
 
@@ -29,15 +24,40 @@
     return photoBlock;
   };
 
+  var initialPhotosData;
+  var sortedPhotosDataCreatorMap = {
+    'popular': function () {
+      return initialPhotosData;
+    },
+    'new': function () {
+      var NEW_PHOTOS_AMOUNT = 10;
+      return window.utilities.getRandomItemsFromArray(
+          initialPhotosData,
+          NEW_PHOTOS_AMOUNT
+      );
+    },
+    'discussed': function () {
+      return initialPhotosData.slice().sort(function (left, right) {
+        return (getCommentsAmount(right) - getCommentsAmount(left));
+      });
+    },
+  };
+
+  var sortedPhotosData;
+  var setSortedPhotosData = function (filterName) {
+    sortedPhotosData = sortedPhotosDataCreatorMap[filterName]();
+  };
+
   var container = document.querySelector('.pictures');
-  var renderPhotos = function (renderingData) {
+  var renderPhotos = function (filterName) {
     while (container.querySelector('.picture__link')) {
       var photoEl = container.querySelector('.picture__link');
       container.removeChild(photoEl);
     }
     window.smallPhotos.currentElements = [];
     var temporaryContainer = document.createDocumentFragment();
-    renderingData.forEach(function (dataItem) {
+    setSortedPhotosData(filterName);
+    sortedPhotosData.forEach(function (dataItem) {
       var photo = createPhoto(dataItem);
       window.smallPhotos.currentElements.push(photo);
       temporaryContainer.appendChild(photo);
@@ -61,32 +81,10 @@
     });
   };
 
-  var getPhotosCopy = function () {
-    return window.smallPhotos.initialData.slice();
-  };
-  var sortingFilterMap = {
-    'popular': function () {
-      return getPhotosCopy();
-    },
-    'new': function () {
-      var NEW_PHOTOS_AMOUNT = 10;
-      return window.utilities.getRandomItemsFromArray(
-          window.smallPhotos.initialData,
-          NEW_PHOTOS_AMOUNT
-      );
-    },
-    'discussed': function () {
-      return getPhotosCopy().sort(function (left, right) {
-        return (getCommentsAmount(right) - getCommentsAmount(left));
-      });
-    },
-  };
-
   var filterClickDebounce = window.debounce.create(renderPhotos);
-  var getSortFilterClickHandler = function (filter) {
+  var getSortFilterClickHandler = function (filterName) {
     return function (evt) {
-      currentPhotosData = sortingFilterMap[filter]();
-      filterClickDebounce(currentPhotosData);
+      filterClickDebounce(filterName);
       changeFilterControlsStates(evt);
     };
   };
@@ -100,19 +98,10 @@
     button.addEventListener('click', getSortFilterClickHandler(filterName));
   };
 
-  var addIndexPropToArrayItems = function (arr) {
-    arr.forEach(function (item, i) {
-      item.index = i;
-    });
-    return arr;
-  };
-
-  var currentPhotosData = null;
   var SORT_FILTERS = ['popular', 'new', 'discussed'];
   var successDownloadHandler = function (data) {
-    window.smallPhotos.initialData = addIndexPropToArrayItems(data);
-    currentPhotosData = getPhotosCopy();
-    renderPhotos(currentPhotosData);
+    initialPhotosData = window.utilities.addPropToArrayItems(data, 'index');
+    renderPhotos('popular');
     showFilterControls();
     SORT_FILTERS.forEach(function (filter) {
       addFilterButtonClickListener(filter);
@@ -133,4 +122,8 @@
   };
 
   window.backend.download(successDownloadHandler, renderErrorMessage);
+
+  window.smallPhotos.getInitialData = function () {
+    return initialPhotosData;
+  };
 }());

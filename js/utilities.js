@@ -32,5 +32,11 @@
       }
       return newArr;
     },
+    addPropToArrayItems: function (arr, propName) {
+      arr.forEach(function (item, i) {
+        item[propName] = i;
+      });
+      return arr;
+    },
   };
 }());
