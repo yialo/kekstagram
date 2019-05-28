@@ -66,9 +66,9 @@
     });
   };
 
-  var renderCommmentsSet = function (set) {
+  var renderCommmentsSet = function (commentsData) {
     var tempContainer = document.createDocumentFragment();
-    set.forEach(function (it) {
+    commentsData.forEach(function (it) {
       tempContainer.appendChild(createComment(it));
     });
     setTimeout(function () {
@@ -76,17 +76,13 @@
     }, ICON_RENDERING_TIMEOUT);
   };
 
-  var loadmoreClickHandler;
-  var loadmoreEnterPressHandler;
-  var setLoadmoreHandlers = function (source) {
-    loadmoreClickHandler = function () {
-      addCommentsRest(source);
-    };
-    loadmoreEnterPressHandler = function (evt) {
-      if (window.utilities.isEnterKeycode(evt)) {
-        addCommentsRest(source);
-      }
-    };
+  var loadmoreClickHandler = function () {
+    renderCommentsRest();
+  };
+  var loadmoreEnterPressHandler = function (evt) {
+    if (window.utilities.isEnterKeycode(evt)) {
+      renderCommentsRest();
+    }
   };
 
   window.createBigPhoto.manageLoadButtonListeners = function (actionName) {
@@ -101,32 +97,35 @@
   };
 
   var COMMENTS_LOADING_STEP = 5;
-  var addCommentsRest = function () {
+  var renderCommentsRest = function () {
     var commentsRestAmount = commentsRest.length;
     var commentsToRender;
-    var commentsAmountToShow;
 
     if (commentsRestAmount <= COMMENTS_LOADING_STEP) {
       setLoadmoreElementsVisibility('hide');
       commentsToRender = commentsRest;
+      renderCommmentsSet(commentsToRender);
       commentsAmountToShow = commentsRestAmount;
     } else {
       setLoadmoreElementsVisibility('show');
       commentsToRender = commentsRest.splice(0, COMMENTS_LOADING_STEP);
-      commentsAmountToShow = COMMENTS_LOADING_STEP;
+      renderCommmentsSet(commentsToRender);
+      commentsAmountToShow += COMMENTS_LOADING_STEP;
       setLoadedCommentsCount(commentsAmountToShow);
-      window.createBigPhoto.manageLoadButtonListeners('remove');
-      setLoadmoreHandlers(commentsRest);
-      window.createBigPhoto.manageLoadButtonListeners('add');
+      if (!areLoadButtonListenersAdded) {
+        window.createBigPhoto.manageLoadButtonListeners('add');
+      }
     }
-    renderCommmentsSet(commentsToRender);
   };
 
   var commentsRest;
+  var commentsAmountToShow;
+  var areLoadButtonListenersAdded = false;
   window.createBigPhoto.create = function (photoData) {
-    commentsRest = photoData.comments;
+    commentsRest = photoData.comments.slice();
+    commentsAmountToShow = 0;
     removePreviousComments();
     setBigPhotoProps(photoData);
-    addCommentsRest(photoData);
+    renderCommentsRest();
   };
 }());
