@@ -21,10 +21,12 @@
     closeButton.removeEventListener('click', closeButtonClickHandler);
     document.removeEventListener('keydown', documentEscPressHandler);
     photo.removeEventListener('click', overlayClickHandler);
-    loadButton.removeEventListener(
-        'click',
-        window.createBigPhoto.loadmoreClickHandler
-    );
+    if (!loadButton.classList.contains('hidden')) {
+      loadButton.removeEventListener(
+          'click',
+          window.createBigPhoto.loadmoreClickHandler
+      );
+    }
     addPhotoClickHandlers();
   };
 
