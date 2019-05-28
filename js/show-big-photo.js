@@ -1,10 +1,8 @@
 'use strict';
 
 (function () {
-  window.showBigPhoto = {};
   var photo = document.querySelector('.big-picture');
   var closeButton = photo.querySelector('.big-picture__cancel');
-  var loadButton = photo.querySelector('.social__comment-loadmore');
 
   var showBigPhoto = function () {
     removePhotoClickHandlers();
@@ -21,9 +19,7 @@
     closeButton.removeEventListener('click', closeButtonClickHandler);
     document.removeEventListener('keydown', documentEscPressHandler);
     photo.removeEventListener('click', overlayClickHandler);
-    if (!loadButton.classList.contains('hidden')) {
-      window.createBigPhoto.manageLoadButtonListeners('remove');
-    }
+    window.createBigPhoto.manageLoadButtonListeners('remove');
     addPhotoClickHandlers();
   };
 
@@ -37,13 +33,15 @@
     hideBigPhoto();
   };
 
+  var lastShownPhotoIndex;
   var photoClickHandler = function (evt) {
     evt.preventDefault();
     var targetIndex = evt.currentTarget.photoIndex;
-    if (targetIndex !== window.createBigPhoto.lastShownPhotoIndex) {
+    if (targetIndex !== lastShownPhotoIndex) {
       var dataSource = window.smallPhotos.getInitialData()[targetIndex];
       window.createBigPhoto.create(dataSource);
-    } else if (!loadButton.classList.contains('hidden')) {
+      lastShownPhotoIndex = targetIndex;
+    } else {
       window.createBigPhoto.manageLoadButtonListeners('add');
     }
     showBigPhoto();
@@ -66,5 +64,5 @@
   var addPhotoClickHandlers = managePhotoClickHandlers('add');
   var removePhotoClickHandlers = managePhotoClickHandlers('remove');
 
-  window.showBigPhoto.clickHandler = photoClickHandler;
+  window.showBigPhoto = {clickHandler: photoClickHandler};
 }());

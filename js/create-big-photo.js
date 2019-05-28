@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  window.createBigPhoto = {lastShownPhotoIndex: null};
+  window.createBigPhoto = {};
   var ICON_RENDERING_TIMEOUT = 50;
 
   var createCommentIcon = function (data) {
@@ -78,13 +78,13 @@
 
   var loadmoreClickHandler;
   var loadmoreEnterPressHandler;
-  var setLoadmoreHandlers = function (dataSource) {
+  var setLoadmoreHandlers = function (source) {
     loadmoreClickHandler = function () {
-      addCommentsRest(dataSource);
+      addCommentsRest(source);
     };
     loadmoreEnterPressHandler = function (evt) {
       if (window.utilities.isEnterKeycode(evt)) {
-        addCommentsRest(dataSource);
+        addCommentsRest(source);
       }
     };
   };
@@ -100,18 +100,8 @@
     );
   };
 
-  var addCommentsRest = function (source) {
-    renderCommmentsSet(source);
-    window.createBigPhoto.manageLoadButtonListeners('remove');
-    setLoadmoreHandlers(source);
-  };
-
   var COMMENTS_LOADING_STEP = 5;
-  window.createBigPhoto.create = function (dataSource) {
-    removePreviousComments();
-    setBigPhotoProps(dataSource);
-
-    var commentsRest = dataSource.comments;
+  var addCommentsRest = function () {
     var commentsRestAmount = commentsRest.length;
     var commentsToRender;
     var commentsAmountToShow;
@@ -124,12 +114,19 @@
       setLoadmoreElementsVisibility('show');
       commentsToRender = commentsRest.splice(0, COMMENTS_LOADING_STEP);
       commentsAmountToShow = COMMENTS_LOADING_STEP;
+      setLoadedCommentsCount(commentsAmountToShow);
+      window.createBigPhoto.manageLoadButtonListeners('remove');
       setLoadmoreHandlers(commentsRest);
       window.createBigPhoto.manageLoadButtonListeners('add');
     }
     renderCommmentsSet(commentsToRender);
-    setLoadedCommentsCount(commentsAmountToShow);
+  };
 
-    this.lastShownPhotoIndex = dataSource.index;
+  var commentsRest;
+  window.createBigPhoto.create = function (photoData) {
+    commentsRest = photoData.comments;
+    removePreviousComments();
+    setBigPhotoProps(photoData);
+    addCommentsRest(photoData);
   };
 }());
