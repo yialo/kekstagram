@@ -1,23 +1,29 @@
 'use strict';
 
 (function () {
+  var createCommentIcon = function (data) {
+    var commentIcon = document.createElement('img');
+    commentIcon.classList.add('social__picture');
+    commentIcon.src = data.avatar;
+    commentIcon.alt = data.name;
+    commentIcon.width = '35';
+    commentIcon.height = '35';
+    return commentIcon;
+  };
+
+  var createCommentParagraph = function (data) {
+    var commentParagraph = document.createElement('p');
+    commentParagraph.classList.add('social__text');
+    commentParagraph.textContent = data.message;
+  };
+
   var createCommentElement = function (commentData) {
     var commentBlock = document.createElement('li');
     commentBlock.classList.add('social__comment');
-
-    var commentImage = document.createElement('img');
-    commentImage.classList.add('social__picture');
-    commentImage.src = commentData.avatar;
-    commentImage.alt = commentData.name;
-    commentImage.width = '35';
-    commentImage.height = '35';
-    commentBlock.appendChild(commentImage);
-
-    var commentText = document.createElement('p');
-    commentText.classList.add('social__text');
-    commentText.textContent = commentData.message;
-    commentBlock.appendChild(commentText);
-
+    var commentIcon = createCommentIcon(commentData);
+    commentBlock.appendChild(commentIcon);
+    var commentParagraph = createCommentParagraph(commentData);
+    commentBlock.appendChild(commentParagraph);
     return commentBlock;
   };
 
@@ -50,17 +56,24 @@
   var socialCaption = bigPhotoBody.querySelector('.social__caption');
   var likesCount = bigPhotoBody.querySelector('.likes-count');
 
+  var setBigPhotoProps = function (data) {
+    bigPhotoImage.src = data.url;
+    likesCount.textContent = data.likes;
+    commentsCount.textContent = data.comments.length;
+    socialCaption.textContent = data.description;
+  };
+
+  var removeOldComments = function () {
+    while (commentsList.firstChild) {
+      commentsList.removeChild(commentsList.firstChild);
+    }
+  };
+
   window.createBigPhoto = {
     lastShownPhotoIndex: null,
     create: function (dataSource) {
-      while (commentsList.firstChild) {
-        commentsList.removeChild(commentsList.firstChild);
-      }
-
-      bigPhotoImage.src = dataSource.url;
-      likesCount.textContent = dataSource.likes;
-      commentsCount.textContent = dataSource.comments.length;
-      socialCaption.textContent = dataSource.description;
+      removeOldComments();
+      setBigPhotoProps(dataSource);
 
       var commentsToRender = dataSource.comments.length;
       if (dataSource.comments.length <= 5) {

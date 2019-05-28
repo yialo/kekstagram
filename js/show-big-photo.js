@@ -7,18 +7,17 @@
   var loadButton = photo.querySelector('.social__comment-loadmore');
 
   var showBigPhoto = function () {
-    photo.classList.remove('hidden');
-    document.body.classList.add('modal-open');
     removePhotoClickHandlers();
     closeButton.addEventListener('click', closeButtonClickHandler);
     document.addEventListener('keydown', documentEscPressHandler);
     photo.addEventListener('click', overlayClickHandler);
+    document.body.classList.add('modal-open');
+    photo.classList.remove('hidden');
   };
 
   var hideBigPhoto = function () {
     photo.classList.add('hidden');
     document.body.classList.remove('modal-open');
-    addPhotoClickHandlers();
     closeButton.removeEventListener('click', closeButtonClickHandler);
     document.removeEventListener('keydown', documentEscPressHandler);
     photo.removeEventListener('click', overlayClickHandler);
@@ -26,6 +25,7 @@
         'click',
         window.createBigPhoto.loadmoreClickHandler
     );
+    addPhotoClickHandlers();
   };
 
   var overlayClickHandler = function (evt) {
@@ -38,6 +38,7 @@
     hideBigPhoto();
   };
 
+  var BIG_PHOTO_RENDERING_TIMEOUT = 20;
   var photoClickHandler = function (evt) {
     evt.preventDefault();
     var targetIndex = evt.currentTarget.photoIndex;
@@ -50,7 +51,9 @@
           window.createBigPhoto.loadmoreClickHandler
       );
     }
-    showBigPhoto();
+    setTimeout(function () {
+      showBigPhoto();
+    }, BIG_PHOTO_RENDERING_TIMEOUT);
   };
 
   var documentEscPressHandler = function (evt) {
