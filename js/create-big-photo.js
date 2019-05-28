@@ -85,6 +85,9 @@
     );
   };
 
+  var commentsRest;
+  var commentsAmountToShow;
+  var isFirstPhotoOpening;
   var COMMENTS_LOADING_STEP = 5;
   var renderCommentsRest = function () {
     var commentsRestAmount = commentsRest.length;
@@ -108,13 +111,14 @@
     setLoadedCommentsCount(commentsAmountToShow);
   };
 
-  var commentsRest;
-  var commentsAmountToShow;
-  var isFirstPhotoOpening;
-  window.createBigPhoto.create = function (photoData) {
-    commentsRest = photoData.comments.slice();
+  var setInitialSpecialValues = function (source) {
+    commentsRest = source.comments.slice();
     commentsAmountToShow = 0;
     isFirstPhotoOpening = true;
+  };
+
+  window.createBigPhoto.create = function (photoData) {
+    setInitialSpecialValues(photoData);
     removePreviousComments();
     setBigPhotoProps(photoData);
     renderCommentsRest();
