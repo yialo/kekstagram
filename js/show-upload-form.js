@@ -4,6 +4,7 @@
   var upload = document.querySelector('.img-upload');
   var form = upload.querySelector('.img-upload__form');
   var fileInput = upload.querySelector('#upload-file');
+  var previewImage = upload.querySelector('.img-upload__preview img');
   var overlay = upload.querySelector('.img-upload__overlay');
   var cancel = overlay.querySelector('#upload-cancel');
   var hashtagField = upload.querySelector('.text__hashtags');
@@ -38,6 +39,21 @@
   };
 
   var inputChangeHandler = function () {
+    var file = fileInput.files[0];
+    var fileName = file.name.toLowerCase();
+    var FILETYPES_REGEXP = /.(gif|jpeg|jpg|png)$/;
+    var isPermittedType = fileName.match(FILETYPES_REGEXP);
+
+    if (isPermittedType) {
+      var reader = new FileReader();
+
+      var readerLoadHandler = function () {
+        previewImage.src = reader.result;
+      };
+      reader.addEventListener('load', readerLoadHandler);
+      reader.readAsDataURL(file);
+    }
+
     showUpload();
   };
 
